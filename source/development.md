@@ -6,5 +6,6 @@
 development/backend
 development/frontend
 development/release-policy
+development/documentation
 development/debugging-tips
 :::
