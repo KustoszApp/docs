@@ -1,4 +1,5 @@
 sphinx
+sphinx-design
 myst-parser
 furo
 livereload

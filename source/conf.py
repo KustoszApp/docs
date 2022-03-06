@@ -8,6 +8,7 @@ copyright = '2022, Mirek Długosz'
 author = 'Mirek Długosz'
 extensions = [
     "myst_parser",
+    "sphinx_design"
 ]
 templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
