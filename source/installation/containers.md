@@ -24,19 +24,19 @@ podman run -p 127.0.0.1:8000:8000 -v kustosz_db:/opt/kustosz/web/db/ quay.io/kus
 
 ::::
 
+Now proceed to [initial setup](../initial-setup). You can use `docker exec` to execute a command in a context of running container. Kustosz web UI will be available at [localhost:8000/ui/](http://localhost:8000/ui/).
+
 ## docker-compose
 
 ## podman pods
 
 ## Changing Kustosz configuration
 
-## Container-specific configuration options
+All Kustosz configuration options are documented on [backend configuration page](../configuration/backend).
 
-There are few environmental variables recognized by container image entry point script, listed below.
+The recommended way of changing configuration of Kustosz running in container is by environment variables. Remember that environment variables must be prefixed by `DYNACONF_` - e.g. to change value of setting `KUSTOSZ_READING_SPEED_WPM`, your environment variable should be named `DYNACONF_KUSTOSZ_READING_SPEED_WPM`.
 
-None of them is set by default. Setting variable to any non-empty value will cause effect described below variable name. Note that this includes values often considered "falsy", such as number 0, string "false", or string "off". Set variable if you want effect described below, omit it completely to retain default behavior.
-
-You can set variable using `-e` / `--env` flag. If you want to set multiple variables (possibly because you are also changing Kustosz configuration), consider storing them in file and using `--env-file` flag.
+You can set variable using `-e` / `--env` flag. If you want to set multiple variables, consider storing them in file and using `--env-file` flag.
 
 ::::{tab-set}
 
@@ -62,6 +62,16 @@ podman run --env-file production.env quay.io/kustosz/app
 :::
 
 ::::
+
+Alternatively, you can put `settings.yaml` file in `/opt/kustosz/.config/kustosz` directory inside the container. It is recommended that you store `settings.yaml` file on your host machine and use volume or bind mount to make it accessible inside the container. Your `settings.yaml` should only change configuration for "production" configuration environment. See [`settings.yaml` in Kustosz backend repository](https://github.com/KustoszApp/server/blob/main/settings.yaml) for reference.
+
+## Container-specific configuration options
+
+There are few environmental variables recognized by container image entry point script, listed below.
+
+None of them is set by default. Setting variable to any non-empty value will cause effect described below variable name. Note that this includes values often considered "falsy", such as number 0, string "false", or string "off". Set variable if you want effect described below, omit it completely to retain default behavior.
+
+See [](#changing-kustosz-configuration) section above for quick overview of passing environment variables to containers.
 
 ### `KUSTOSZ_SKIP_MIGRATE`
 
