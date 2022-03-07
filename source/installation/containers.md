@@ -65,7 +65,26 @@ podman run --env-file production.env quay.io/kustosz/app
 
 ### `KUSTOSZ_SKIP_MIGRATE`
 
+Migrations change database structure. Kustosz will automatically detect migrations that were run previously on connected database to ensure they are not run again. In other words, it's safe to run migrations multiple times on the same database. However, running them will add some time to container startup.
+
+If you decide to skip migrations in day-to-day operations, there are still two situations when you are required to run them:
+
+* when starting application with new database for the first time, so database can be populated with initial tables structure
+* after upgrading Kustosz to newer version, when specific version is run for the first time.
+
 ### `KUSTOSZ_SKIP_CREATECACHETABLE`
+
+By default, Kustosz will store cache in main database. In order to do that, additional table must be created. Kustosz will automatically detect when required table is available, so it's safe to call this function multiple times. However, running it will add some time to container startup.
+
+This option is only required when starting application with new database for the first time.
+
+Kustosz supports all [cache backends supported by Django](https://docs.djangoproject.com/en/dev/topics/cache/), except local-memory. If you decide to use memcached as cache backend, there's no need to create cache table, and setting this variable is safe.
 
 ### `KUSTOSZ_SKIP_COLLECTSTATIC`
 
+Django, which Kustosz is built upon, requires us to run [`collectstatic`](https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#collectstatic) command during deployment. It will populate special local directory (`/opt/kustosz/web/static/`) with copy of all static files. That copy is considered disposable and can be re-populated every time application is started. However, this re-population will add some time to container startup.
+
+You can skip running `collectstatic` if you decide to store `/opt/kustosz/web/static/` outside of container, so this directory content may survive container restart. When you do that, there are still two situations when you are required to run `collectstatic`:
+
+* when starting application with empty `/opt/kustosz/web/static/` directory for the first time
+* after upgrading Kustosz to newer version, when specific version is run for the first time.
