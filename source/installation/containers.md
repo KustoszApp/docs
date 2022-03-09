@@ -8,6 +8,8 @@ Kustosz requires background processes, and running multiple processes in single 
 
 If you decide to run your main instance in single container, then you should at least use volume or bind mount to store `/opt/kustosz/web/db/` directory content on local host. This way Kustosz database will survive container restart.
 
+Container image will bind Kustosz to port 8000 inside the container. When starting it, you need to bind it to some port on the host machine. Otherwise, Kustosz will not be available.
+
 ::::{tab-set}
 
 :::{tab-item} docker
@@ -28,7 +30,45 @@ Now proceed to [initial setup](../initial-setup). You can use `docker exec` to e
 
 ## docker-compose
 
+docker-compose is default container orchestrating tool for Docker. It allows you to manage multiple containers as a single unit.
+
+First, download [docker-compose.yaml](https://github.com/KustoszApp/server/blob/main/containers/docker-compose.yaml) file. Then review it and modify to your liking. You should at least change Postgres password (make sure that you changed all references to old password in the file). Finally, run it:
+
+```
+docker-compose -p kustosz -f ./docker-compose.yaml up
+```
+
+Now proceed to [initial setup](../initial-setup). You can use `docker exec` to execute a command in a context of running container. Kustosz web UI will be available at [localhost/ui/](http://localhost/ui/).
+
+In default configuration, docker-compose will listen to port 80 on the host machine. If this port is already taken - which is very likely if you have multiple web-based services running - change definition of `ports` in `kustosz_api` container.
+
+docker-compose will start containers for Postgres (database) and Redis (Celery transport). They are commonly used by modern applications and it's possible that you already have them running, or have different images for them. In that case, feel free to change image references or remove them from your `docker-compose.yaml` file. Make sure that applications running in containers can access these external services.
+
+You can switch Redis to any [message broker supported by Celery](https://docs.celeryproject.org/en/stable/getting-started/backends-and-brokers/index.html). RabbitMQ is popular and well-tested option, but it requires more resources. 
+
+When using different database or Celery transport, make sure that you also change environment variables telling Kustosz how to connect with these services. These variables start with `DYNACONF_DATABASES__` and `DYNACONF_CELERY_`. Make sure that you change their values in all containers running from `kustosz` image.
+
 ## podman pods
+
+podman pods allow multiple containers to share single namespace. This way they can easily access each other, and you can manage them as a single unit.
+
+Pods has seen very active development in Podman 2.x line. We recommend that you use at least Podman 3.0, released in February 2021.
+
+First, download [kustosz_pod.yaml](https://github.com/KustoszApp/server/blob/main/containers/kustosz_pod.yaml) file. Then review it and modify to your liking. You should at least change Postgres password (make sure that you changed all references to old password in the file). Finally, run it:
+
+```
+podman play kube ./kustosz_pod.yaml
+```
+
+Now proceed to [initial setup](../initial-setup). You can use `podman exec` to execute a command in a context of running container. Kustosz web UI will be available at [localhost/ui/](http://localhost/ui/).
+
+In default configuration, podman will listen to port 80 on the host machine. Usually user processes can't bind to this port. If you want to run rootless podman, you need to change the port in pod definition or change the configuration of host machine. If port 80 is already taken - which is very likely if you have multiple web-based services running - change definition of `ports` in `kustosz_api` container.
+
+podman will start containers for Postgres (database) and Redis (Celery transport). They are commonly used by modern applications and it's possible that you already have them running, or have different images for them. In that case, feel free to change image references or remove them from your `kustosz_pod.yaml` file. Make sure that applications running in containers can access these external services.
+
+You can switch Redis to any [message broker supported by Celery](https://docs.celeryproject.org/en/stable/getting-started/backends-and-brokers/index.html). RabbitMQ is popular and well-tested option, but it requires more resources. 
+
+When using different database or Celery transport, make sure that you also change environment variables telling Kustosz how to connect with these services. These variables start with `DYNACONF_DATABASES__` and `DYNACONF_CELERY_`. Make sure that you change their values in all containers running from `kustosz` image.
 
 ## Changing Kustosz configuration
 
