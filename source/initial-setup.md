@@ -1,37 +1,25 @@
 # Initial setup
 
-After installing application, there are few more things that you need to do before you can use it:
+Kustosz is running and accessible, but it doesn't have any data. You need to create new account to log in the web interface. We recommend that you also import feed data from OPML file.
 
-:::{contents}
-:class: this-will-duplicate-information-and-it-is-still-useful-here
-:::
+Instructions provided below should be done only once, after initial installation of Kustosz. You don't need to repeat them after upgrading to newer version.
 
 ## Creating new user
 
-    python manage.py createsuperuser --username <user> --email <doesnt@matter.invalid>
+Kustosz supports only single user, and you need to create it to access the application. This can be done with following command:
 
-## Ensuring Celery is running
+    kustosz-manager createsuperuser --email doesnt@matter.invalid
 
-Main celery process must be running:
+Program will ask for desired username and password. Username can be any string, but you will need to provide it every time you log in, so you might opt in to something that is easy to type.
 
-    celery -A kustosz worker -l INFO -Q fetch_channels_content,celery
+Each user has to have email address - this is requirement imposed on us by Django, one of Kustosz dependencies. Kustosz never uses your email address and doesn't mind if you provide non-existing address.
 
-## Importing OPML with feeds
+## Importing OPML file
 
-If you have file in OPML format with list of your subscribed feeds, you can import it using following command:
+Most feed readers have an option to export list of subscribed channels into OPML file. If you have such file, you can import it in Kustosz with following command:
 
-    python manage.py import_channels --file <path/to/file.xml> opml
+    kustosz-manager import_channels --file <path/to/file.xml> opml
 
-## (Optionally) Set up periodic channel update
+Importing OPML file can take some time, depending on number of channels and amount of content they have published.
 
-Most of the time, you want channel update process to run periodically. Otherwise you won't see new content in your reader.
-
-If you can afford to run another celery process, the best way is to ensure celery beat is running (this is in addition to main celery process):
-
-    celery -A kustosz beat -l INFO
-
-Kustosz comes with appropriate celery beat tasks pre-installed, so no further configuration is needed.
-
-Another option is using system scheduler, like cron. Just ensure following command is run every five minutes or so:
-
-    python manage.py fetch_new_content --wait
+You can use above command at any time after installing Kustosz. If OPML file contains reference to feed that you have added earlier, Kustosz will automatically skip it.

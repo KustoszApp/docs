@@ -11,11 +11,23 @@ installation/*
 
 ## Trying it out
 
-There are many ways to install Kustosz, depending on your environment and hosting provider. If you just want to try it out and see if Kustosz is for you, the easiest way is by using containers (Docker, podman). Just run:
+There are many ways to install Kustosz, depending on your environment and hosting provider. If you just want to try it out and see if Kustosz is for you, the easiest way is by using containers. Just run:
 
+::::{tab-set}
+
+:::{tab-item} docker
 ```
 docker run -p 127.0.0.1:8000:8000 quay.io/kustosz/app
 ```
+:::
+
+:::{tab-item} podman
+```
+podman run -p 127.0.0.1:8000:8000 quay.io/kustosz/app
+```
+:::
+
+::::
 
 Open [localhost:8000/ui/](http://localhost:8000/ui/) in your web browser to access Kustosz. Make sure to also complete [initial setup](initial-setup).
 
