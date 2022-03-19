@@ -1,4 +1,4 @@
-# VPS (Raspberry Pi, DigitalOcean Droplet)
+# VPS (Raspberry Pi, DigitalOcean Droplet) (Work In Progress)
 
 ## Ensuring Celery is running
 
