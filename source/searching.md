@@ -130,16 +130,40 @@ from kustosz.models import Channel, Entry
 
 ### Examples
 
-Entries published in year 2022 with title that contains the word "test", case insensitive:
+Entries published in a year 2022:
+
+```
+published_time__gte=2022-01-01T00:00:00&published_time__lte=2022-12-31T23:59:59
+```
+
+Entries with title that contain the word "test", case insensitive:
+
+```
+title__icontains=test
+```
+
+Entries published in a year 2022 with title that contains the word "test", case insensitive:
 
 ```
 published_time__gte=2022-01-01T00:00:00&published_time__lte=2022-12-31T23:59:59&title__icontains=test
+```
+
+Entries with title that starts with the phrase "The quick brown fox", case sensitive (note space is not escaped or put in quotes):
+
+```
+title__startswith=The quick brown fox
 ```
 
 All entries, except these tagged with tag "slug" or "snail" (this includes entries that are not tagged at all):
 
 ```
 entry_tags__not=slug,snail
+```
+
+Entries coming from three specific channels:
+
+```
+channel=5,10,15
 ```
 
 Entries coming from channels that are not tagged (entries themselves may be tagged):
