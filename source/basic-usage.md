@@ -31,6 +31,16 @@ When modifying a channel, you can toggle "active" flag. When "active" flag is di
 
 Deactivating a channel is intermediate step before removing it. Channel is not checked for new content, but all past content is still available in the application. This is especially useful for channels that disappeared from the web, stopped being updated or are very active and you want to silent them for a while.
 
+## Deduplication
+
+Deduplication automatically marks some entries as read, so they don't appear on the default list of entries when opening the application.
+
+Deduplication is turned on by default. You can opt-out specific channels by turning off "is deduplicated" flag. When flag is disabled, entries from that channel are never marked as read by deduplication algorithm. You can also turn off deduplication altogether by setting `KUSTOSZ_DEDUPLICATE_DAYS` setting to `0`.
+
+Deduplication works only across channels, i.e. entries from one channel are never considered a duplicates. That's because some authors use the same title for all of their posts.
+
+Deduplication algorithm looks into entry GID, normalized link and author-title pair. If any of these values is the same as for one of other entries, latter entry is considered a duplicate. By default, deduplication algorithm looks into all entries added in last 2 days.
+
 ## Maintenance section
 
 Maintenance section provides views to quickly (de)activate multiple channels at once.
