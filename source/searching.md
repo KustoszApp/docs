@@ -16,7 +16,7 @@ Advanced search allow to perform much wider range of queries, but they require y
 
 Table below contains list of fields and possible lookups. Fields and lookups are separated by double underscore: `field__lookup`. Default lookup method, `exact`, can be skipped. Value for lookup is specified after equals sign: `field=value`. Some lookup methods can take in multiple arguments - they are separated by comma. Multiple query parameters are joined with ampersand: `field1=value&field2=value`. See [](#examples) below.
 
-Lookup semantics are generally the same as in Django. See [Django documentation on field lookups](https://docs.djangoproject.com/en/dev/ref/models/querysets/#field-lookups) for details. Special lookup method `not` is logical negation - it will match everything **except** specified value.
+Lookup semantics are generally the same as in Django. See [Django documentation on field lookups](https://docs.djangoproject.com/en/stable/ref/models/querysets/#field-lookups) for details. Special lookup method `not` is logical negation - it will match everything **except** specified value.
 
 ### Fields and lookups
 
