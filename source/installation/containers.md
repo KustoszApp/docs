@@ -44,7 +44,7 @@ In default configuration, docker-compose will listen to port 80 on the host mach
 
 docker-compose will start containers for Postgres (database) and Redis (Celery transport). They are commonly used by modern applications and it's possible that you already have them running, or have different images for them. In that case, feel free to change image references or remove them from your `docker-compose.yaml` file. Make sure that applications running in containers can access these external services.
 
-You can switch Redis to any [message broker supported by Celery](https://docs.celeryproject.org/en/stable/getting-started/backends-and-brokers/index.html). RabbitMQ is popular and well-tested option, but it requires more resources. 
+You can switch Redis to any [message broker supported by Celery](https://docs.celeryq.dev/en/stable/getting-started/backends-and-brokers/index.html). RabbitMQ is popular and well-tested option, but it requires more resources.
 
 When using different database or Celery transport, make sure that you also change environment variables telling Kustosz how to connect with these services. These variables start with `DYNACONF_DATABASES__` and `DYNACONF_CELERY_`. Make sure that you change their values in all containers running from `kustosz` image.
 
@@ -66,7 +66,7 @@ In default configuration, podman will listen to port 80 on the host machine. Usu
 
 podman will start containers for Postgres (database) and Redis (Celery transport). They are commonly used by modern applications and it's possible that you already have them running, or have different images for them. In that case, feel free to change image references or remove them from your `kustosz_pod.yaml` file. Make sure that applications running in containers can access these external services.
 
-You can switch Redis to any [message broker supported by Celery](https://docs.celeryproject.org/en/stable/getting-started/backends-and-brokers/index.html). RabbitMQ is popular and well-tested option, but it requires more resources. 
+You can switch Redis to any [message broker supported by Celery](https://docs.celeryq.dev/en/stable/getting-started/backends-and-brokers/index.html). RabbitMQ is popular and well-tested option, but it requires more resources.
 
 When using different database or Celery transport, make sure that you also change environment variables telling Kustosz how to connect with these services. These variables start with `DYNACONF_DATABASES__` and `DYNACONF_CELERY_`. Make sure that you change their values in all containers running from `kustosz` image.
 
@@ -103,7 +103,7 @@ podman run --env-file production.env quay.io/kustosz/app
 
 ::::
 
-Alternatively, you can put `settings.yaml` file in `/opt/kustosz/.config/kustosz` directory inside the container. It is recommended that you store `settings.yaml` file on your host machine and use volume or bind mount to make it accessible inside the container. Your `settings.yaml` should only change configuration for "production" configuration environment. See [`settings.yaml` in Kustosz backend repository](https://github.com/KustoszApp/server/blob/main/settings.yaml) for reference.
+Alternatively, you can put `settings.yaml` file in `/opt/kustosz/web/settings` directory inside the container. It is recommended that you store `settings.yaml` file on your host machine and use volume or bind mount to make it accessible inside the container. As this is the only directory where setting files reside, it's best to start with copy of [`settings.yaml` file from Kustosz backend repository](https://github.com/KustoszApp/server/blob/main/settings/settings.yaml).
 
 ## Container-specific configuration options
 

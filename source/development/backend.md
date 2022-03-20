@@ -14,7 +14,7 @@ Install dependencies:
 
 ## Changing development version configuration
 
-If you want to change the configuration of development version, the best way of doing so is through `settings.local.yaml`. For example, following file would turn on debug-level logging, while ignoring log messages produced by some third-party libraries:
+If you want to change the configuration of development version, the best way of doing so is through `settings.local.yaml` (inside `settings` directory). For example, following file would turn on debug-level logging, while ignoring log messages produced by some third-party libraries:
 
 ```
 default:
