@@ -8,8 +8,5 @@ Kustosz is open source application, distributed under terms of [European Union P
 development/backend
 development/frontend
 development/documentation
-development/reporting-bugs
-development/translation
 development/release-policy
-development/debugging-tips
 :::
