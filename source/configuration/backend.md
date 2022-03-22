@@ -10,7 +10,7 @@ Kustosz will read settings from configuration files and environment variables. E
 
 The main configuration file is `$KUSTOSZ_BASE_DIR/settings/settings.yaml`. You have created this file during installation. This file is already present in container image as `/opt/kustosz/web/settings/settings.yaml`.
 
-When `$KUSTOSZ_BASE_DIR` variable is not set, it will default to `lib/python3.x/site-packages/` directory inside current virtual environment.
+When `$KUSTOSZ_BASE_DIR` variable is not set, it will default to parent directory of [`settings.py`](https://github.com/KustoszApp/server/blob/main/kustosz/settings.py) file. In production deployments, that's usually `lib/python3.x/site-packages/` directory inside current virtual environment. In development environment, that's root of git tree.
 
 Site-specific modifications can be put in `$KUSTOSZ_BASE_DIR/settings/settings.local.yaml` file. This file will be merged with main configuration file, i.e. any setting not specified in site-specific file will be read from main file. This allows you to copy newest Kustosz configuration file during upgrades without worrying about overwriting your local changes.
 
@@ -44,7 +44,7 @@ When using layered environments, it is recommended that site-specific configurat
 :::
 
 :::{admonition} Overriding single value in nested structure
-:class: hint
+:class: note
 
 Django uses complex (hierarchical, nested) structures for some of their settings. If you only want to change single value in hierarchy, double underscore can be used to express "one level down".
 
