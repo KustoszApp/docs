@@ -1,6 +1,6 @@
 # Documentation
 
-Documentation is written in [MyST](https://myst-parser.readthedocs.io/en/latest/sphinx/intro.html), which is [CommonMark](https://commonmark.org/) with support for [Sphinx](https://www.sphinx-doc.org) directives. Basically, it's Markdown.
+Documentation, available at [docs.kustosz.org](https://docs.kustosz.org/), is written in [MyST](https://myst-parser.readthedocs.io/en/latest/sphinx/intro.html), which is [CommonMark](https://commonmark.org/) with support for [Sphinx](https://www.sphinx-doc.org) directives. Basically, it's Markdown.
 
 Documentation is built using Sphinx, which is Python package. It requires any Python 3 version supported by Sphinx.
 
