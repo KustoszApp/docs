@@ -1,9 +1,9 @@
-# VPS (Raspberry Pi, DigitalOcean Droplet) (Work In Progress)
+# VPS (Raspberry Pi, DigitalOcean Droplet)
 
-:::{admonition} This page is long
+:::{admonition} User attention is required
 :class: warning
 
-This page is intentionally detailed and quite long. The goal is to discuss various tradeoffs involved in deploying Kustosz. You are advised to familiarize yourself with entire document before taking any action.
+Kustosz is flexible and supports deployments to various environments. This guide limits a number of choices covered to lower cognitive load and provide instructions that are easier to follow. However, it still **expects you to understand what is happening and adjust specific steps to your particular environment**. It is recommended that you familiarize yourself with entire document before taking any action. Make sure that you read [](#additional-setup-instructions) section, too.
 :::
 
 ## Prerequisites
@@ -23,13 +23,9 @@ While not required, we also recommend:
 * [PostgreSQL](https://www.postgresql.org/) database server
 * [Redis](https://redis.io/) as Celery transport
 
-## Overview of Kustosz installation
-
-
-
 ## Prepare Kustosz server environment
 
-Create Kustosz base directory. This is where you will put settings, and where Kustosz will store cache and SQLite database file.
+Create Kustosz base directory. This is where you will put settings, and where Kustosz will store SQLite database file and certain cache files.
 
 ```
 mkdir ~/kustosz_home
@@ -76,22 +72,29 @@ pip install --upgrade pip wheel
 pip install kustosz
 ```
 
-## Install additional packages
+## (Optional) Install additional Python packages
 
-redis, postgres driver etc.
+Depending on your preferred configuration, you might need to install additional Python modules, such as:
 
-## Download frontend files
-
-Kustosz server provides REST API only. To make use of it, you also need frontend files that will be sent to browser.
-
-Create new directory on your server. Then open [Kustosz UI releases](https://github.com/KustoszApp/web-ui/releases) page in your browser and find `kustosz.tar.xz` file provided by the newest release. Download that file into created directory and unpack it. You can remove archive afterwards.
+* `redis` is required to use Redis for cache or as Celery transport
+* `psycopg2` is required to connect to PostgreSQL database (psycopg2 requires [additional system packages to build](https://www.psycopg.org/docs/install.html#build-prerequisites))
+* `pylibmc` or `pymemcache` is required to use Memcached for cache
+* `whitenoise` may be used to serve static files directly from Kustosz server
 
 ```bash
-mkdir ~/kustosz_frontend
-cd ~/kustosz_frontend
-curl https://github.com/KustoszApp/web-ui/releases/download/VERSION_CHANGE/kustosz.tar.xz -o kustosz.tar.xz  # change VERSION_CHANGE to latest version number
-tar xf kustosz.tar.xz
-rm kustosz.tar.xz
+pip install redis psycopg2
+```
+
+## (Optional) Install `kustosz-node-readability`
+
+The intent of syndication formats is that users can read content in their readers. The intent of many authors is that users can only read content on the website. Kustosz can automatically visit websites and try to extract full article content, so you don't have to leave your reader. This extraction is done by "readability" algorithm.
+
+[kustosz-node-readability](https://www.npmjs.com/package/kustosz-node-readability) is built on top of [Readability.js](https://github.com/mozilla/readability), algorithm implementation used for Firefox Reader View and by [Pocket](https://getpocket.com/). It's probably the best maintained readability implementation around, but it requires Node.js.
+
+If you do have Node.js on your server, you can install kustosz-node-readability:
+
+```bash
+npm install -g kustosz-node-readability
 ```
 
 ## Configure Kustosz
@@ -105,17 +108,18 @@ curl https://raw.githubusercontent.com/KustoszApp/server/main/settings/settings.
 
 You can modify sample file, or put site-specific modifications in `$KUSTOSZ_BASE_DIR/settings/settings.local.yaml`.
 
-The exact extent of changes is highly dependant on your preferred configuration. Make sure to also read [backend configuration page](../configuration/backend).
+The exact changes to make are highly dependant on your preferred configuration. Make sure to also read [backend configuration page](../configuration/backend).
 
 Below is non-exhaustive list of settings you might want to change. Consult [Kustosz](../configuration/backend), [Django](https://docs.djangoproject.com/en/stable/ref/settings/) and [Celery](https://docs.celeryq.dev/en/stable/userguide/configuration.html) settings documentation for meaning of specific options.
 
 * `SECRET_KEY` should be set to new value
-* `DATABASES`, especially if you want to use PostgreSQL
-* `CACHES`, if you want to use Memcached or Redis to store cache
 * `ALLOWED_HOSTS` should contain fully qualified domain name where Kustosz is running
-* `CORS_ALLOWED_ORIGINS`, if you decide to run frontend and backend on separate domains, this should contain origin of frontend page
+* `DATABASES`, especially if you want to use PostgreSQL
+* `CACHES`, if you want to use Memcached or Redis for cache
+* `CORS_ALLOWED_ORIGINS`, if you decide to run frontend and backend on separate domains, this should contain [origin](https://developer.mozilla.org/en-US/docs/Glossary/Origin) of frontend page
 * `CELERY_BROKER_URL`, if you decide to use Redis as Celery broker
-* `STATIC_ROOT`, if you decide to serve static files using gunicorn; this is path to directory where files are saved, it should be inside `$KUSTOSZ_BASE_DIR`
+* `KUSTOSZ_READABILITY_NODE_ENABLED`, if you have installed kustosz-node-readability
+* `STATIC_ROOT`, if you decide to serve static files using gunicorn; this is path to directory where files will be copied to, it should be inside `$KUSTOSZ_BASE_DIR`
 * `STATICFILES_DIRS`, if you decide to serve static files using gunicorn; this is list of paths of static files to copy, it should contain directory where you extracted frontend files
 
 :::{admonition} Example configuration
@@ -139,7 +143,6 @@ production:
   STATIC_ROOT: '/home/USER/kustosz_home/frontend_assets'
   STATICFILES_DIRS:
     - '/home/USER/kustosz_frontend'
-
 ```
 :::
 
@@ -153,21 +156,111 @@ kustosz-manager migrate
 
 ## Create cache tables
 
-This creates database table for cache. You need to run this only once, before you first start Kustosz. You don't have to run it if you use Memcached or Redis for cache.
+In default configuration, Kustosz uses main database for cache. Database must first be prepared for that. You need to run this only once, before you first start Kustosz. You don't have to run it if you use Memcached or Redis for cache.
 
 ```bash
 kustosz-manager createcachetable
 ```
 
-## Ensuring Celery is running
+## Start main Celery process
 
-Main celery process must be running:
+Kustosz requires main Celery process to be running. It is used to handle all background tasks, such as downloading files or running filters.
+
+Command to start Celery process is:
 
 ```bash
 celery -A kustosz worker -l INFO -Q fetch_channels_content,celery
 ```
 
-## (Optionally) Set up periodic channel update
+It is recommended that you use process supervisor to run this command. Most Linux systems come with systemd, which may be used for that purpose. Another option is [Supervisor](http://supervisord.org/).
+
+% FIXME: add section on using supervisord, and later on systemd
+
+## Run gunicorn
+
+It's finally time to start main Kustosz server. We install and run [gunicorn](https://gunicorn.org/), but you can use any [WSGI](https://wsgi.readthedocs.io/)-compatible web server. [uWSGI](https://uwsgi-docs.readthedocs.io/) is another popular option. If you use Apache web server, you may want to use [mod_wsgi](https://modwsgi.readthedocs.io/).
+
+```bash
+pip install gunicorn
+gunicorn kustosz.wsgi --bind 0.0.0.0:8000
+```
+
+## Download frontend files
+
+Kustosz server provides REST API only. To make use of it, you also need a client.
+
+Create new directory on your server. Open [Kustosz web UI releases](https://github.com/KustoszApp/web-ui/releases) page in your browser and find `kustosz.tar.xz` file provided by the newest release. Download that file into created directory and unpack it. You can remove archive afterwards.
+
+```bash
+mkdir ~/kustosz_frontend
+cd ~/kustosz_frontend
+curl https://github.com/KustoszApp/web-ui/releases/download/VERSION_NUMBER/kustosz.tar.xz -o kustosz.tar.xz  # change VERSION_NUMBER to latest version number
+tar xf kustosz.tar.xz
+rm kustosz.tar.xz
+```
+
+## Set up HTTP proxy in front of gunicorn
+
+Most of dedicated WSGI web servers consider serving static files as out of their scope. Usually it is recommended that you set up HTTP proxy in front of WSGI server. [NGINX](https://www.nginx.com/) is popular web server that is commonly used as such proxy. Most Linux distributions have NGINX package that you can install.
+
+After installing NGINX, create `/etc/nginx/sites-available/kustosz` file with following content:
+
+```{code-block}
+:caption: /etc/nginx/sites-available/kustosz
+:emphasize-lines: 2,19
+
+upstream kustosz {
+    # port number here must be the same as port number in gunicorn --bind command
+    server localhost:8000;
+}
+
+server {
+
+    listen 80;
+
+    location / {
+        proxy_pass http://kustosz;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $host;
+        proxy_redirect off;
+        client_max_body_size 100M;
+    }
+
+    location /ui/ {
+        # this must be absolute path to directory where you extracted frontend files
+        alias /home/USER/kustosz_front/;
+    }
+
+}
+```
+
+Make configuration available to NGINX server, and restart NGINX to read new configuration files:
+
+```bash
+ln -s /etc/nginx/sites-available/kustosz /etc/nginx/sites-enabled/
+systemctl restart nginx
+```
+
+:::{admonition} NGINX default configuration and file permissions
+:class: note
+
+Single NGINX server can serve multiple websites. If you have just installed NGINX, it's likely that it already serves default "NGINX is working" site. It probably binds to port 80, same as Kustosz. This site is configured in `/etc/nginx/sites-enabled/default` file, and it is safe to remove it.
+
+NGINX often runs as an user with limited permissions, such as `www`, `www-data`, `nginx` or `nobody`. You need to ensure that this user has permissions to read extracted frontend files. It also needs executable bit on all directories in the path.
+:::
+
+Congratulations! You should see Kustosz running at <http://your-domain/ui/>.
+
+## Additional setup instructions
+
+### Use gunicorn to serve static files
+
+- install whitenoise
+- configure Kustosz
+- run collectstatic
+- you don't need NGINX
+
+### Set up periodic channel update with cron
 
 Most of the time, you want channel update process to run periodically. Otherwise you won't see new content in your reader.
 
@@ -185,51 +278,6 @@ Another option is using system scheduler, like cron. Just ensure following comma
 kustosz-manager fetch_new_content --wait
 ```
 
-## Run collectstatic
-
-## Run gunicorn
-
-```bash
-gunicorn kustosz.wsgi --bind 0.0.0.0:8000
-```
-
-## Set up WSGI-compatible server in front of gunicorn
+### Use supervisor to ensure background processes are running
 
 
-`/etc/nginx/sites-enabled/kustosz`
-
-
-
-```
-upstream kustosz {
-    server localhost:8000;
-}
-
-server {
-
-    listen 80;
-
-    location / {
-        proxy_pass http://kustosz;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header Host $host;
-        proxy_redirect off;
-        client_max_body_size 100M;
-    }
-
-    location /ui/ {
-        alias /home/kustosz/kustosz_front/;
-    }
-
-}
-```
-
-```bash
-systemctl restart nginx
-```
-
-## Optional: Install kustosz-node-readability
-
-```bash
-npm install -g kustosz-node-readability
-```
