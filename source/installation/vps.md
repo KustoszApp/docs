@@ -3,7 +3,7 @@
 :::{admonition} User attention is required
 :class: warning
 
-Kustosz is flexible and supports deployments to various environments. This guide limits a number of choices covered to lower cognitive load and provide instructions that are easier to follow. However, it still **expects you to understand what is happening and adjust specific steps to your particular environment**. It is recommended that you familiarize yourself with entire document before taking any action. Make sure that you read [](#additional-setup-instructions) section, too.
+Kustosz is flexible and supports deployments to various environments. This guide limits a number of choices covered to lower cognitive load and provide instructions that are easier to follow. However, it still **expects you to understand what is happening and adjust specific steps to your particular environment**. It is recommended that you familiarize yourself with entire document before taking any action, including [](#additional-setup-instructions) section.
 :::
 
 ## Prerequisites
@@ -253,16 +253,9 @@ Congratulations! You should see Kustosz running at <http://your-domain/ui/>.
 
 ## Additional setup instructions
 
-### Use gunicorn to serve static files
+Following section documents configuration changes that do not apply to all deployments, but are still common. Some of instructions below extend basic installation described above, while some override parts of it. 
 
-- install whitenoise
-- configure Kustosz
-- run collectstatic
-- you don't need NGINX
-
-### Set up periodic channel update with cron
-
-Most of the time, you want channel update process to run periodically. Otherwise you won't see new content in your reader.
+### Set up periodic channels update with Celery
 
 If you can afford to run another celery process, the best way is to ensure celery beat is running (this is in addition to main celery process):
 
@@ -272,6 +265,10 @@ celery -A kustosz beat -l INFO
 
 Kustosz comes with appropriate celery beat tasks pre-installed, so no further configuration is needed.
 
+### Set up periodic channel update with cron
+
+Most of the time, you want channel update process to run periodically. Otherwise you won't see new content in your reader.
+
 Another option is using system scheduler, like cron. Just ensure following command is run every five minutes or so:
 
 ```bash
@@ -280,4 +277,13 @@ kustosz-manager fetch_new_content --wait
 
 ### Use supervisor to ensure background processes are running
 
+% http://supervisord.org/running.html#running-supervisord-automatically-on-startup
 
+% FIXME: ### Use systemd to ensure background processes are running
+
+### Use gunicorn to serve static files
+
+- install whitenoise
+- configure Kustosz
+- run collectstatic
+- you don't need NGINX

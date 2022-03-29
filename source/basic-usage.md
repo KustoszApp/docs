@@ -13,6 +13,8 @@ You can use your keyboard to quickly move through articles:
 * `o`, `Space`, `Enter` - open currently selected article, or close if it's already opened
 * `m` - mark currently selected article as read, or mark it back as unread
 
+% FIXME: ## Automatic channels update
+
 ## Using local file as channel source
 
 Kustosz can read content from any XML file that follows RSS or ATOM specification. While most of these files are delivered through web, you can use local file as well. This way Kustosz can read any content source it does not handle natively - as long as you can transform it into RSS or ATOM file.
@@ -40,6 +42,8 @@ Deduplication is turned on by default. You can opt-out specific channels by turn
 Deduplication works only across channels, i.e. entries from one channel are never considered a duplicates. That's because some authors use the same title for all of their posts.
 
 Deduplication algorithm looks into entry GID, normalized link and author-title pair. If any of these values is the same as for one of other entries, latter entry is considered a duplicate. By default, deduplication algorithm looks into all entries added in last 2 days.
+
+% FIXME: ## Adding web page manually
 
 ## Maintenance section
 
