@@ -171,7 +171,7 @@ celery -A kustosz worker -l INFO -Q fetch_channels_content,celery
 
 It is recommended that you use process supervisor to run this command. Most Linux systems come with systemd, which may be used for that purpose. Another option is [Supervisor](http://supervisord.org/). See [](#use-supervisor-to-ensure-background-processes-are-running).
 
-% FIXME: add section on using supervisord, and later on systemd
+% FIXME: add section on systemd
 
 ## Run gunicorn
 
@@ -254,8 +254,7 @@ Following section documents configuration changes that do not apply to all deplo
 
 ### Set up periodic channels update with Celery
 
-% FIXME: link to automatic channels update
-As described in (automatic channels update)[], Kustosz requires channels update process to run periodically. The preferred way of ensuring this process is run is by using Celery beat. Celery beat must run in the background all the time in addition to main Celery process.
+As noted in (automatic channels update)[./basic-usage.md#automatic-channels-update-frequency] section, Kustosz requires channels update process to run periodically. The preferred way of ensuring this process is run is by using Celery beat. Celery beat must run in the background all the time in addition to main Celery process.
 
 ```bash
 celery -A kustosz beat -l INFO
@@ -263,8 +262,7 @@ celery -A kustosz beat -l INFO
 
 ### Set up periodic channel update with cron
 
-% FIXME: link to automatic channels update
-As described in (automatic channels update)[], Kustosz requires channels update process to run periodically. If you can't run Celery beat, you may use system scheduler, such as cron.
+As noted in (automatic channels update)[./basic-usage.md#automatic-channels-update-frequency] section, Kustosz requires channels update process to run periodically. If you can't run Celery beat, you may use system scheduler, such as cron.
 
 The command that you want to run is:
 

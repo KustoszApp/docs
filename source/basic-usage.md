@@ -13,7 +13,13 @@ You can use your keyboard to quickly move through articles:
 * `o`, `Space`, `Enter` - open currently selected article, or close if it's already opened
 * `m` - mark currently selected article as read, or mark it back as unread
 
-% FIXME: ## Automatic channels update
+## Automatic channels update frequency
+
+When editing a channel, you can set automatic update frequency - how often Kustosz should check for new content. Default value is every one hour. If channel is lower priority for you or is known to publish seldom, you can check it less often. If you want to ensure that you learn about new content quickly enough and channel publishes a lot of content, you can check it more frequently.
+
+Every time you check for new content, website server uses a little bit of resources. Some websites might be behind firewall or CDN that will detect too frequent connections and block them, thinking this might be some sort of attack. That's why you should not check for new content *too often*. Every 30 minutes is reasonable lower limit.
+
+Kustosz relies on external scheduler to start channels update procedure - you might have set it up during installation, depending on your deployment environment. We recommend that channels update process is run every 5 minutes. This value puts effective limit on channels update frequency. If you have set up external scheduler to check for updates every hour, and set update frequency of specific channel to 5 minutes, that channel will still be updated every hour.
 
 ## Using local file as channel source
 
