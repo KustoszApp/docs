@@ -8,12 +8,11 @@ Kustosz is flexible and supports deployments to various environments. This guide
 
 ## Prerequisites
 
-Kustosz is web application. You probably want a dedicated (sub)domain that supports secure HTTPS connection. That part of setup is out of scope for this guide.
+Kustosz is web application. You probably want it available under a dedicated (sub)domain that supports secure HTTPS connection.
 
 There are few dependencies that you absolutely must meet:
 
 * Python 3.9 or newer
-* WSGI-compatible web server, like Apache with mod_wsgi or Nginx
 * Ability to execute arbitrary commands in the context of server
 * Ability to start your own long-running processes (needed by Celery worker)
 * At least 256 MiB of memory
@@ -79,7 +78,7 @@ Depending on your preferred configuration, you might need to install additional 
 * `redis` is required to use Redis for cache or as Celery transport
 * `psycopg2` is required to connect to PostgreSQL database (psycopg2 requires [additional system packages to build](https://www.psycopg.org/docs/install.html#build-prerequisites))
 * `pylibmc` or `pymemcache` is required to use Memcached for cache
-* `whitenoise` may be used to serve static files directly from Kustosz server
+* `whitenoise` may be used to [serve static files directly from WSGI server](#use-gunicorn-to-serve-static-files)
 
 ```bash
 pip install redis psycopg2
@@ -87,11 +86,9 @@ pip install redis psycopg2
 
 ## (Optional) Install `kustosz-node-readability`
 
-The intent of syndication formats is that users can read content in their readers. The intent of many authors is that users can only read content on the website. Kustosz can automatically visit websites and try to extract full article content, so you don't have to leave your reader. This extraction is done by "readability" algorithm.
+While syndication formats exists so users can read content in their reader applications, many authors try to force readers to visit the website. Kustosz can automatically extract full article content from source page. This extraction is done by "readability" algorithm.
 
-[kustosz-node-readability](https://www.npmjs.com/package/kustosz-node-readability) is built on top of [Readability.js](https://github.com/mozilla/readability), algorithm implementation used for Firefox Reader View and by [Pocket](https://getpocket.com/). It's probably the best maintained readability implementation around, but it requires Node.js.
-
-If you do have Node.js on your server, you can install kustosz-node-readability:
+If you have Node.js on your server, you can install [kustosz-node-readability](https://www.npmjs.com/package/kustosz-node-readability). It uses [Readability.js](https://github.com/mozilla/readability), algorithm implementation used for Firefox Reader View and by [Pocket](https://getpocket.com/). It's probably the best maintained readability implementation around.
 
 ```bash
 npm install -g kustosz-node-readability
@@ -120,7 +117,7 @@ Below is non-exhaustive list of settings you might want to change. Consult [Kust
 * `CELERY_BROKER_URL`, if you decide to use Redis as Celery broker
 * `KUSTOSZ_READABILITY_NODE_ENABLED`, if you have installed kustosz-node-readability
 * `STATIC_ROOT`, if you decide to serve static files using gunicorn; this is path to directory where files will be copied to, it should be inside `$KUSTOSZ_BASE_DIR`
-* `STATICFILES_DIRS`, if you decide to serve static files using gunicorn; this is list of paths of static files to copy, it should contain directory where you extracted frontend files
+* `STATICFILES_DIRS`, if you decide to serve static files using gunicorn; this is list of paths of static files to copy, it should contain directory where you [extract frontend files](#download-frontend-files)
 
 :::{admonition} Example configuration
 :class: note
@@ -172,7 +169,7 @@ Command to start Celery process is:
 celery -A kustosz worker -l INFO -Q fetch_channels_content,celery
 ```
 
-It is recommended that you use process supervisor to run this command. Most Linux systems come with systemd, which may be used for that purpose. Another option is [Supervisor](http://supervisord.org/).
+It is recommended that you use process supervisor to run this command. Most Linux systems come with systemd, which may be used for that purpose. Another option is [Supervisor](http://supervisord.org/). See [](#use-supervisor-to-ensure-background-processes-are-running).
 
 % FIXME: add section on using supervisord, and later on systemd
 
@@ -234,7 +231,7 @@ server {
 }
 ```
 
-Make configuration available to NGINX server, and restart NGINX to read new configuration files:
+Make configuration available to NGINX server and restart it so changes can be applied:
 
 ```bash
 ln -s /etc/nginx/sites-available/kustosz /etc/nginx/sites-enabled/
@@ -253,37 +250,80 @@ Congratulations! You should see Kustosz running at <http://your-domain/ui/>.
 
 ## Additional setup instructions
 
-Following section documents configuration changes that do not apply to all deployments, but are still common. Some of instructions below extend basic installation described above, while some override parts of it. 
+Following section documents configuration changes that do not apply to all deployments, but are still common. Some of these instructions extend basic installation described above, while some override parts of it.
 
 ### Set up periodic channels update with Celery
 
-If you can afford to run another celery process, the best way is to ensure celery beat is running (this is in addition to main celery process):
+% FIXME: link to automatic channels update
+As described in (automatic channels update)[], Kustosz requires channels update process to run periodically. The preferred way of ensuring this process is run is by using Celery beat. Celery beat must run in the background all the time in addition to main Celery process.
 
 ```bash
 celery -A kustosz beat -l INFO
 ```
 
-Kustosz comes with appropriate celery beat tasks pre-installed, so no further configuration is needed.
-
 ### Set up periodic channel update with cron
 
-Most of the time, you want channel update process to run periodically. Otherwise you won't see new content in your reader.
+% FIXME: link to automatic channels update
+As described in (automatic channels update)[], Kustosz requires channels update process to run periodically. If you can't run Celery beat, you may use system scheduler, such as cron.
 
-Another option is using system scheduler, like cron. Just ensure following command is run every five minutes or so:
+The command that you want to run is:
 
 ```bash
 kustosz-manager fetch_new_content --wait
 ```
 
+To run it with cron, use `crontab -e` command and add the following line:
+
+```
+*/5 * * * *  kustosz-manager fetch_new_content --wait
+```
+
+cron jobs usually run in special environment that differs from normal shell. Remember that Kustosz command line tools require [few environment variables](#prepare-kustosz-server-environment) and [active virtual environment](#install-kustosz-server). You might want to create simple wrapper script that sets up these variables before running the command. Example of such wrapper is available in source code repository in [`etc/cron/kustosz-fetch-content.sh`](https://github.com/KustoszApp/server/blob/main/etc/cron/kustosz-fetch-content.sh).
+
 ### Use supervisor to ensure background processes are running
 
-% http://supervisord.org/running.html#running-supervisord-automatically-on-startup
+Kustosz requires some background processes to run all the time - main Celery process, Celery beat process (optionally), gunicorn WSGI server (optionally). One way to ensure they are running is [supervisor](http://supervisord.org/).
 
-% FIXME: ### Use systemd to ensure background processes are running
+You can install supervisor in your virtual environment with `pip install supervisor`.
+
+Sample supervisor config is available in source code repository in [`etc/supervisor/supervisord.conf`](https://github.com/KustoszApp/server/blob/main/etc/supervisor/supervisord.conf). Feel free to adjust it to your liking and to better fit your environment. Sample config file requires `run` and `logs` directories to exist in the same directory as supervisord.conf file and does not start gunicorn process automatically.
+
+Finally, start supervisor:
+
+```bash
+supervisord -c path/to/supervisord.conf
+```
+
+supervisor can ensure that certain processes are running, but it has one drawback - you need to start it manually. supervisor documentation has section on [starting supervisord on system startup](http://supervisord.org/running.html#running-supervisord-automatically-on-startup). Some Linux distributions, like Debian, offer supervisor package with init daemon script that can be used to start it automatically. If you go down this path, remember that Kustosz command line tools require [few environment variables](#prepare-kustosz-server-environment) and [active virtual environment](#install-kustosz-server). You might also need to ensure correct file permissions, as supervisor will be running as privileged user, while Kustosz was installed for standard user.
+
+% FIXME:
+% ### Use systemd to ensure background processes are running
 
 ### Use gunicorn to serve static files
 
-- install whitenoise
-- configure Kustosz
-- run collectstatic
-- you don't need NGINX
+[WhiteNoise](http://whitenoise.evans.io/) is project dedicated to making WSGI-compatible web servers better at serving static files. Serving static content is main reason this guide uses NGINX, so with WhiteNoise you might not need NGINX anymore. The second reason is security, so you probably still want *some* kind of HTTP proxy in front of WhiteNoise-enabled WSGI server.
+
+First, install WhiteNoise:
+
+```
+pip install whitenoise
+```
+
+Configure Kustosz:
+
+* `STATICFILES_DIRS` should contain directory where you [extracted frontend files](#download-frontend-files); this setting is list of paths
+* `STATIC_ROOT` should be a path to directory where static files will be copied to; it should be inside `$KUSTOSZ_BASE_DIR`
+* `STATICFILES_STORAGE` should be set to `"whitenoise.storage.CompressedManifestStaticFilesStorage"`
+* `MIDDLEWARE` should contain `"whitenoise.middleware.WhiteNoiseMiddleware"` as third entry on the list, **below** `"django.middleware.security.SecurityMiddleware"` and `"corsheaders.middleware.CorsMiddleware"`; see [`settings.yaml`](https://github.com/KustoszApp/server/blob/main/settings/settings.yaml#L135=) in source code repository
+* `STATIC_URL` must be set
+
+Finally, run `collectstatic` command. This command will walk through all directories specified in `STATICFILES_DIRS` and copy files into `STATIC_ROOT`, where they will be processed (i.e. compressed).
+
+```bash
+kustosz-manager collectstatic
+```
+
+You have to run above command before you first start Kustosz, and each time after upgrading to new version.
+
+% FIXME:
+% ### Serve UI and API on different domains
