@@ -103,7 +103,7 @@ podman run --env-file production.env quay.io/kustosz/app
 
 ::::
 
-Alternatively, you can put `settings.yaml` file in `/opt/kustosz/web/settings` directory inside the container. It is recommended that you store `settings.yaml` file on your host machine and use volume or bind mount to make it accessible inside the container. As this is the only directory where setting files reside, it's best to start with copy of [`settings.yaml` file from Kustosz backend repository](https://github.com/KustoszApp/server/blob/main/settings/settings.yaml).
+Alternatively, you can put `settings.yaml` file in `/opt/kustosz/web/settings` directory inside the container. It is recommended that you store `settings.yaml` file on your host machine and use volume or bind mount to make it accessible inside the container. As this is the only directory that Kustosz will read while searching for setting files, it's best to start with copy of [`settings.yaml`](https://github.com/KustoszApp/server/blob/main/settings/settings.yaml) and [`settings.local.yaml`](https://github.com/KustoszApp/server/blob/main/containers/settings.local.yaml) files from Kustosz backend source code repository.
 
 ## Container-specific configuration options
 

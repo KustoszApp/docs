@@ -103,7 +103,7 @@ mkdir -p $KUSTOSZ_BASE_DIR/settings/
 curl https://raw.githubusercontent.com/KustoszApp/server/main/settings/settings.yaml -o $KUSTOSZ_BASE_DIR/settings/settings.yaml
 ```
 
-You can modify sample file, or put site-specific modifications in `$KUSTOSZ_BASE_DIR/settings/settings.local.yaml`.
+You can modify sample file, or put site-specific modifications in `$KUSTOSZ_BASE_DIR/settings/settings.local.yaml`. Second option is preferred, as it allows you to overwrite `settings.yaml` file during upgrade, while keeping site-specific settings safely separated.
 
 The exact changes to make are highly dependant on your preferred configuration. Make sure to also read [backend configuration page](../configuration/backend).
 
@@ -312,7 +312,7 @@ Configure Kustosz:
 * `STATICFILES_DIRS` should contain directory where you [extracted frontend files](#download-frontend-files); this setting is list of paths
 * `STATIC_ROOT` should be a path to directory where static files will be copied to; it should be inside `$KUSTOSZ_BASE_DIR`
 * `STATICFILES_STORAGE` should be set to `"whitenoise.storage.CompressedManifestStaticFilesStorage"`
-* `MIDDLEWARE` should contain `"whitenoise.middleware.WhiteNoiseMiddleware"` as third entry on the list, **below** `"django.middleware.security.SecurityMiddleware"` and `"corsheaders.middleware.CorsMiddleware"`; see [`settings.yaml`](https://github.com/KustoszApp/server/blob/main/settings/settings.yaml#L135=) in source code repository
+* `MIDDLEWARE` should contain `"whitenoise.middleware.WhiteNoiseMiddleware"` as third entry on the list, **below** `"django.middleware.security.SecurityMiddleware"` and `"corsheaders.middleware.CorsMiddleware"`; see [container `settings.local.yaml`](https://github.com/KustoszApp/server/blob/main/containers/settings.local.yaml#L5=) in source code repository
 * `STATIC_URL` must be set
 
 Finally, run `collectstatic` command. This command will walk through all directories specified in `STATICFILES_DIRS` and copy files into `STATIC_ROOT`, where they will be processed (i.e. compressed).
