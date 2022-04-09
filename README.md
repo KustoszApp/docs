@@ -1,5 +1,7 @@
 [![Kustosz](./source/_static/kustosz_logo.svg)](https://www.kustosz.org)
 
+![GitHub](https://img.shields.io/github/license/KustoszApp/docs?color=green) [![Documentation Status](https://readthedocs.org/projects/kustosz/badge/?version=stable)](https://docs.kustosz.org/en/stable/?badge=stable) ![GitHub issues](https://img.shields.io/github/issues/KustoszApp/docs?color=green) ![GitHub pull requests](https://img.shields.io/github/issues-pr/KustoszApp/docs) ![GitHub Repo stars](https://img.shields.io/github/stars/KustoszApp/docs?color=green) ![GitHub Release Date](https://img.shields.io/github/release-date/KustoszApp/docs) ![GitHub commits since latest release (by date)](https://img.shields.io/github/commits-since/KustoszApp/docs/latest?color=green) ![GitHub last commit](https://img.shields.io/github/last-commit/KustoszApp/docs)
+
 # Kustosz documentation website
 
 Focus on the worthwhile content with Kustosz, open source self-hosted web application.
