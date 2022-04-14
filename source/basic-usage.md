@@ -49,7 +49,26 @@ Deduplication works only across channels, i.e. entries from one channel are neve
 
 Deduplication algorithm looks into entry GID, normalized link and author-title pair. If any of these values is the same as for one of other entries, latter entry is considered a duplicate. By default, deduplication algorithm looks into all entries added in last 2 days.
 
-% FIXME: ## Adding web page manually
+## Adding web page manually
+
+You can add any web page to Kustosz. This is especially useful for older articles that no longer appear in website feed, for articles published by websites that don't publish feed, or when you don't want to subscribe to feed.
+
+The easiest way to add specific web page is through following command:
+
+```
+kustosz-manager add_entry --link 'http://URL_OF_WEB_PAGE'
+```
+
+Alternatively, you can add web page by sending carefully-crafted HTTP request to your Kustosz server. This can be done from any computer, but requires valid authorization token. It can be obtained by looking at requests in web browser development tools. All requests should contain `Authorization` header.
+
+Example below uses curl, which should be available on most Linux machines:
+
+```
+curl -X POST 'http://KUSTOSZ_SERVER_ADDRESS/api/v1/entries/manual_add' \
+    -H 'Content-Type: application/json' \
+    -H 'Authorization: Token 0123456789abcdef0123456789abcdef01234567' \
+    -d '{"link": "https://linuxize.com/post/curl-post-request/"}'
+```
 
 ## Maintenance section
 

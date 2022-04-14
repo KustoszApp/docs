@@ -21,7 +21,7 @@ Kustosz is [feed reader](https://en.wikipedia.org/wiki/News_aggregator) that sup
 
 * Continue reading where you left, on any device
 * Automatically download full article content from source web page
-* Add any web page manually (like Instapaper or Pocket)
+* [Add any web page manually](basic-usage.md#adding-web-page-manually) (like Instapaper or Pocket)
 * [Automatically hide duplicated content](basic-usage.md#deduplication)
 * Flexible and powerful [filters system](./filters) that allows you to automatically act on selected entries
 * Clean, elegant and responsive web frontend
