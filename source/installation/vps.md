@@ -109,7 +109,7 @@ The exact changes to make are highly dependant on your preferred configuration. 
 
 Below is non-exhaustive list of settings you might want to change. Consult [Kustosz](../configuration/backend), [Django](https://docs.djangoproject.com/en/stable/ref/settings/) and [Celery](https://docs.celeryq.dev/en/stable/userguide/configuration.html) settings documentation for meaning of specific options.
 
-* `SECRET_KEY` should be set to new value
+* `SECRET_KEY` should be set to new value, obtained by running `kustosz-manager generate_secret_key`
 * `ALLOWED_HOSTS` should contain fully qualified domain name where Kustosz is running
 * `DATABASES`, especially if you want to use PostgreSQL
 * `CACHES`, if you want to use Memcached or Redis for cache
