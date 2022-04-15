@@ -109,13 +109,14 @@ Environment variable values are assumed to be in [TOML](https://toml.io/en/). It
 
 ## Verifying current configuration
 
-With site-specific file overrides, layered environments and environment variables, it might be hard to determine what value will be used. You can use `dynaconf list` command to see all settings and their values.
+With site-specific file overrides, layered environments and environment variables, it might be hard to determine what value will be used. You can use `kustosz-manager print_settings` and `dynaconf list` commands to see all settings and their values.
 
 Before using the command, make sure that `DJANGO_SETTINGS_MODULE` and `ENV_FOR_DYNACONF` variables are set.
 
 ```bash
 export DJANGO_SETTINGS_MODULE=kustosz.settings
 export ENV_FOR_DYNACONF=production
+kustosz-manager print_settings
 dynaconf list
 ```
 
