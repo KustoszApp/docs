@@ -156,6 +156,12 @@ Number of words you read per minute. Used when calculating estimated reading tim
 
 Estimated reading time is calculated once and stored in database, so changing this setting will not affect existing articles.
 
+### `KUSTOSZ_URL_FETCHER_EXTRA_HEADERS`
+
+Mapping of key-value pairs that represent requests_cache session headers. These headers are set after requests_cache session initialization, so they will be present in addition to default headers - and can overwrite them. There are two main use cases: setting [`Accept-Language`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-Language) to negotiate preferred content language, and setting fake [`User-Agent`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/User-Agent) to avoid 403 Forbidden error that some servers send in response to unknown / programmatic user requests.
+
+requests_cache is used when downloading HTML pages, which happens for entries added manually and content extracted with readability, assuming at least one of `KUSTOSZ_READABILITY_*_ENABLED` settings is set to True.
+
 ### `KUSTOSZ_PERIODIC_FETCH_NEW_CONTENT_INTERVAL`
 
 How often should Kustosz check for new content of feeds, in minutes.
