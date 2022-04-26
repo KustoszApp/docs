@@ -88,4 +88,6 @@ These channels are online and can be accessed, but have not produced a new entry
 
 ### Inactive channels
 
-These channels have "active" flag turned off. You can activate them back.
+These channels have "active" flag turned off. You can activate them back or delete them.
+
+Deleting channel automatically deletes all channel entries. However, if any entry is tagged, Kustosz will ask if you want to delete tagged entries or keep them. If you decide to keep them, they will be moved from deleted channel to special "Manually added" channel with id 1.
