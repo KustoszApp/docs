@@ -166,9 +166,9 @@ requests_cache is used when downloading HTML pages, which happens for entries ad
 
 How often should Kustosz check for new content of feeds, in minutes.
 
-This value is used only once, during initial database migration. Changing this setting later doesn't affect anything, as value is stored in database.
+This value is used only once, during initial database migration. Changing this setting later doesn't affect anything, as value that is actually used is stored in database.
 
-This value takes effect only if you maintain celery beat process. It is ignored if you start periodic updates through operating system task scheduler.
+This value takes effect only if you maintain Celery beat process. It is ignored if you start periodic updates through operating system task scheduler.
 
 ### `KUSTOSZ_REQUESTS_CACHE_INIT_OPTIONS`
 

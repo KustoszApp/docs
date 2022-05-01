@@ -166,10 +166,18 @@ Kustosz requires main Celery process to be running. It is used to handle all bac
 Command to start Celery process is:
 
 ```bash
-celery -A kustosz worker -l INFO -Q fetch_channels_content,celery
+celery -A kustosz worker -l INFO -Q feed_fetcher,celery
 ```
 
-It is recommended that you use process supervisor to run this command. Most Linux systems come with systemd, which may be used for that purpose. Another option is [Supervisor](http://supervisord.org/). See [](#use-supervisor-to-ensure-background-processes-are-running).
+Due to way Kustosz is designed, some background tasks should run serially. The best way of ensuring that is by running separate Celery process with single worker for `feed_fetcher` queue. The downside is that it requires more system resources.
+
+```bash
+celery -A kustosz worker -l INFO -Q celery
+celery -A kustosz worker -l INFO -Q feed_fetcher --concurrency 1
+```
+
+It is recommended that you use process supervisor to run commands above. Most Linux systems come with systemd, which may be used for that purpose. Another option is [Supervisor](http://supervisord.org/). See [](#use-supervisor-to-ensure-background-processes-are-running).
+
 
 % FIXME: add section on systemd
 
