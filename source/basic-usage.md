@@ -67,7 +67,7 @@ Example below uses curl, which should be available on most Linux machines:
 curl -X POST 'http://KUSTOSZ_SERVER_ADDRESS/api/v1/entries/manual_add' \
     -H 'Content-Type: application/json' \
     -H 'Authorization: Token 0123456789abcdef0123456789abcdef01234567' \
-    -d '{"link": "https://linuxize.com/post/curl-post-request/"}'
+    -d '{"link": "http://URL_OF_WEB_PAGE"}'
 ```
 
 ## Maintenance section
