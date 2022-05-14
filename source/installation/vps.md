@@ -262,7 +262,7 @@ Following section documents configuration changes that do not apply to all deplo
 
 ### Set up periodic channels update with Celery
 
-As noted in (automatic channels update)[./basic-usage.md#automatic-channels-update-frequency] section, Kustosz requires channels update process to run periodically. The preferred way of ensuring this process is run is by using Celery beat. Celery beat must run in the background all the time in addition to main Celery process.
+As noted in [automatic channels update](../basic-usage.md#automatic-channels-update-frequency) section, Kustosz requires channels update process to run periodically. The preferred way of ensuring this process is run is by using Celery beat. Celery beat must run in the background all the time in addition to main Celery process.
 
 ```bash
 celery -A kustosz beat -l INFO
@@ -270,7 +270,7 @@ celery -A kustosz beat -l INFO
 
 ### Set up periodic channel update with cron
 
-As noted in (automatic channels update)[./basic-usage.md#automatic-channels-update-frequency] section, Kustosz requires channels update process to run periodically. If you can't run Celery beat, you may use system scheduler, such as cron.
+As noted in [automatic channels update](../basic-usage.md#automatic-channels-update-frequency) section, Kustosz requires channels update process to run periodically. If you can't run Celery beat, you may use system scheduler, such as cron.
 
 The command that you want to run is:
 
