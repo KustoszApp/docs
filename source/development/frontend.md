@@ -1,6 +1,6 @@
 # Frontend
 
-Frontend is written in JavaScript, using Vue.js and Node.js. It requires Node.js 12 or newer. We only support LTS releases of Node.js. npm package is currently build using Node.js 16.
+Frontend is written in JavaScript, using Vue.js and Node.js. It requires Node.js 14 or newer. We only support LTS releases of Node.js. npm package is currently build using Node.js 16.
 
 ## Preparing development environment
 
