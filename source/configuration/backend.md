@@ -162,6 +162,8 @@ Mapping of key-value pairs that represent requests_cache session headers. These 
 
 requests_cache is used when downloading HTML pages, which happens for entries added manually and content extracted with readability, assuming at least one of `KUSTOSZ_READABILITY_*_ENABLED` settings is set to True.
 
+`User-Agent` set here will also be used as fallback during standard feed fetching, if first request failed with 403. Some misconfigured sites prevent programmatic access to RSS / Atom files, even though these files are meant to be read by computers.
+
 ### `KUSTOSZ_PERIODIC_FETCH_NEW_CONTENT_INTERVAL`
 
 How often should Kustosz check for new content of feeds, in minutes.
