@@ -29,7 +29,7 @@ podman run -p 127.0.0.1:8000:8000 quay.io/kustosz/app
 
 ::::
 
-Open [localhost:8000/ui/](http://localhost:8000/ui/) in your web browser to access Kustosz. Make sure to also complete [initial setup](initial-setup).
+Open [localhost:8000/ui/](http://localhost:8000/ui/) in your web browser to access Kustosz. To log in, use credentials printed in container log after "Generated random login credentials" line.
 
 ## Production deployments
 
