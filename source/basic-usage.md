@@ -1,6 +1,12 @@
 # Basic usage
 
-Kustosz user interface follows familiar pattern used by many other news reading applications: navigation pane on the left and central list of items on the right. Article below is not exhaustive and documents only features that are specific to Kustosz or might be hard to discover. Two prominent features are documented on separate pages: [](./searching) and [](./filters).
+Kustosz user interface follows familiar pattern used by many other news reading applications: navigation pane on the left and central list of items on the right. Article below is not exhaustive and focuses primarily on features that are specific to Kustosz or might be hard to discover. Two prominent features are documented on separate pages: [](./searching) and [](./filters).
+
+## Adding new channel
+
+Channel is source of content displayed in Kustosz. Currently RSS, Atom and JSON Feed are supported.
+
+To add new channel, click "Add channel" button on top of navigation pane. In popup that appears, you need to provide full URL to channel (XML file in case of RSS or Atom).
 
 ## Keyboard navigation
 
