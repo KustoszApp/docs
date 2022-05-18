@@ -53,5 +53,5 @@ Kustosz will pass a number of information through environmental variables. The f
 * `KUSTOSZ_CHANNEL_ADDED_TIME` - timestamp when channel was added to Kustosz database
 * `KUSTOSZ_CHANNEL_ACTIVE` - boolean value specifying whether channel is active or not
 * `KUSTOSZ_CHANNEL_UPDATE_FREQUENCY` - how often channel is checked for new content, in seconds
-* `KUSTOSZ_CHANNEL_DEDUPLICATION_ENABLED` - boolean value specifying whether deduplication
+* `KUSTOSZ_CHANNEL_DEDUPLICATION_ENABLED` - boolean value specifying whether deduplication is enabled for channel or not
 * `KUSTOSZ_CHANNEL_TAGS` - comma-separated list of channel tags slugs
