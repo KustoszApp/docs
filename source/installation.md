@@ -39,7 +39,7 @@ While you can use above command to start and run your main instance of Kustosz, 
 * [Heroku](./installation/heroku) (Work In Progress)
 * [Azure](./installation/azure) (Work In Progress)
 * [Kubernetes](./installation/kubernetes) (Work In Progress)
-* [Your own server](./installation/vps) (Work In Progress) - including Raspberry Pi, DigitalOcean Droplets, VPS, virtual machines and shared hosting accounts
+* [Your own server](./installation/vps) - including Raspberry Pi, DigitalOcean Droplets, VPS, virtual machines and shared hosting accounts
 
 ## Quick overview for software developers
 
