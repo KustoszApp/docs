@@ -23,7 +23,7 @@ Kustosz relies on external scheduler to start channels update procedure - you mi
 
 ## Using local file as channel source
 
-Kustosz can read content from any XML file that follows RSS or ATOM specification. While most of these files are delivered through web, you can use local file as well. This way Kustosz can read any content source it does not handle natively - as long as you can transform it into RSS or ATOM file.
+Kustosz can read content from any XML file that follows RSS or Atom specification. While most of these files are delivered through web, you can use local file as well. This way Kustosz can read any content source it does not handle natively - as long as you can transform it into RSS or Atom file.
 
 First, save XML files inside the `$KUSTOSZ_BASE_DIR/feeds` directory. You can create directories inside to organize your files. Then, run following command:
 
