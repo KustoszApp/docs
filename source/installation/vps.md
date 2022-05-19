@@ -199,7 +199,7 @@ Create new directory on your server. Open [Kustosz web UI releases](https://gith
 ```bash
 mkdir ~/kustosz_frontend
 cd ~/kustosz_frontend
-curl https://github.com/KustoszApp/web-ui/releases/download/VERSION_NUMBER/kustosz.tar.xz -o kustosz.tar.xz  # change VERSION_NUMBER to latest version number
+curl -L https://github.com/KustoszApp/web-ui/releases/download/VERSION_NUMBER/kustosz.tar.xz -o kustosz.tar.xz  # change VERSION_NUMBER to latest version number
 tar xf kustosz.tar.xz
 rm kustosz.tar.xz
 ```
