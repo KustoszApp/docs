@@ -28,7 +28,7 @@ podman run -p 127.0.0.1:8000:8000 -v kustosz_db:/opt/kustosz/web/db/ quay.io/kus
 
 Kustosz web UI will be available at [localhost:8000/ui/](http://localhost:8000/ui/).
 
-By default, container will create new user `admin` with randomly generated password. Password will be printed to container log after line saying "Generated random login credentials". If you want to specify your own password, see [](#container-specific-configuration-options) below.
+By default, container will create new user `admin` with randomly generated password. Password will be printed to container log after line saying "You can log in with following credentials". If you want to specify your own password, see [](#container-specific-configuration-options) below.
 
 If you have OPML file that you want to import, specify `KUSTOSZ_IMPORT_CHANNELS_DIR` variable when starting a container. Alternatively, you can use command line tool described in [initial setup](../initial-setup). You can use `docker exec` to execute a command in a context of running container.
 
@@ -43,8 +43,6 @@ docker-compose -p kustosz -f ./docker-compose.yaml up
 ```
 
 Kustosz web UI will be available at [localhost/ui/](http://localhost/ui/).
-
-When running in docker-compose, container does not create new user `admin`. If you have not specified `KUSTOSZ_USERNAME` variable, proceed to [initial setup](../initial-setup). You can use `docker exec` to execute a command in a context of running container.
 
 In default configuration, docker-compose will listen to port 80 on the host machine. If this port is already taken - which is very likely if you have multiple web-based services running - change definition of `ports` in `kustosz_api` container.
 
@@ -67,8 +65,6 @@ podman play kube ./kustosz_pod.yaml
 ```
 
 Kustosz web UI will be available at [localhost/ui/](http://localhost/ui/).
-
-When running in podman pods, container does not create new user `admin`. If you have not specified `KUSTOSZ_USERNAME` variable, proceed to [initial setup](../initial-setup). You can use `docker exec` to execute a command in a context of running container.
 
 In default configuration, podman will listen to port 80 on the host machine. Usually user processes can't bind to this port. If you want to run rootless podman, you need to change the port in pod definition or change the configuration of host machine. If port 80 is already taken - which is very likely if you have multiple web-based services running - change definition of `ports` in `kustosz_api` container.
 
@@ -125,9 +121,9 @@ See [](#changing-kustosz-configuration) section above for quick overview of pass
 
 ### `KUSTOSZ_USERNAME`
 
-Username that you will use to log in to Kustosz in your browser. If user doesn't exist, it will be created automatically. Password will be set to value of `KUSTOSZ_PASSWORD`, which must also be set.
+Username that you will use to log in to Kustosz in your browser. If user doesn't exist, it will be created automatically. Password will be set to value of `KUSTOSZ_PASSWORD` or generated randomly.
 
-If omitted, default value of `admin` will be assumed, unless `KUSTOSZ_SKIP_PASSWORD_GENERATION` is also set.
+If omitted, default value of `admin` will be assumed. Both username and password will be printed in container log, if user was created.
 
 When running multiple containers through docker-compose or podman pods, this variable should be set **only** in `kustosz_api` container.
 
@@ -135,17 +131,15 @@ When running multiple containers through docker-compose or podman pods, this var
 
 Password that you will use to log in to Kustosz in your browser.
 
-If omitted, random password will be generated, unless `KUSTOSZ_SKIP_PASSWORD_GENERATION` is also set. Password value will be displayed in container log.
+If omitted, random password will be generated. Both username and password will be printed in container log, if user was created.
 
 When running multiple containers through docker-compose or podman pods, this variable should be set **only** in `kustosz_api` container.
 
-### `KUSTOSZ_SKIP_PASSWORD_GENERATION`
+### `KUSTOSZ_SKIP_CREATE_USER`
 
-By default, container entrypoint will generate random password for `admin` user and print it in log. This password is only used if `admin` user doesn't already exist. Since this is very fast operation, it is generally safe to run it every time the container starts. However, you might want to set this variable to prevent misleading log from appearing.
+You need user account to access the application. By default, container entry script will create user for you, using `KUSTOSZ_USERNAME` and `KUSTOSZ_PASSWORD` variables when available. You can skip automatic user creation by setting this variable.
 
-If `KUSTOSZ_USERNAME` and `KUSTOSZ_PASSWORD` are set, they will be used instead and password will not be generated or displayed in log.
-
-If you set this variable and **don't** set `KUSTOSZ_USERNAME` and `KUSTOSZ_PASSWORD`, no user will be created. If this is your first time starting Kustosz, you won't be able to log in until you create new user manually.
+Note that user is created only if it doesn't already exist.
 
 ### `KUSTOSZ_IMPORT_CHANNELS_DIR`
 
