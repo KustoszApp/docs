@@ -36,7 +36,7 @@ Open [localhost:8000/ui/](http://localhost:8000/ui/) in your web browser to acce
 While you can use above command to start and run your main instance of Kustosz, in production environments we recommend using container orchestration tool, such as docker-compose. We have installation instruction pages for few common deployment targets:
 
 * [Containers](./installation/containers) - docker and podman, including docker-compose and podman pods
-* [Heroku](./installation/heroku) (Work In Progress)
+* [Heroku](./installation/heroku)
 * [Azure](./installation/azure) (Work In Progress)
 * [Kubernetes](./installation/kubernetes) (Work In Progress)
 * [Your own server](./installation/vps) - including Raspberry Pi, DigitalOcean Droplets, VPS, virtual machines and shared hosting accounts

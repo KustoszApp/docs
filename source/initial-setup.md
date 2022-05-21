@@ -4,6 +4,8 @@ Kustosz is running and accessible, but it doesn't have any data. You need to cre
 
 Instructions provided below should be done only once, after initial installation of Kustosz. You don't need to repeat them after upgrading to newer version.
 
+Some installation methods perform some or all of actions listed below automatically, in which case you can skip them.
+
 ## Creating new user
 
 Kustosz supports only single user, and you need to create it to access the application. This can be done with following command:
