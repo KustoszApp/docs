@@ -37,8 +37,6 @@ While you can use above command to start and run your main instance of Kustosz, 
 
 * [Containers](./installation/containers) - docker and podman, including docker-compose and podman pods
 * [Heroku](./installation/heroku)
-* [Azure](./installation/azure) (Work In Progress)
-* [Kubernetes](./installation/kubernetes) (Work In Progress)
 * [Your own server](./installation/vps) - including Raspberry Pi, DigitalOcean Droplets, VPS, virtual machines and shared hosting accounts
 
 ## Quick overview for software developers
