@@ -16,7 +16,7 @@ First, clone kustosz-heroku repository:
 
 Perform any modifications to repository files and commit them. Don't push your changes.
 
-If you would like to import OPML file during deployment, create `opml` directory and put XML file there.
+If you would like to import OPML file during deployment, create `kustosz/opml` directory and put XML file there.
 
 Create new Heroku app. You can pass `--region=<region_id>` to deploy to specific region. Use `heroku regions` for list of available regions.
 
