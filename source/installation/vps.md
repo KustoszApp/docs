@@ -1,4 +1,4 @@
-# VPS (Raspberry Pi, DigitalOcean Droplet)
+# Manual installation
 
 :::{admonition} User attention is required
 :class: warning
@@ -6,9 +6,11 @@
 Kustosz is flexible and supports deployments to various environments. This guide limits a number of choices covered to lower cognitive load and provide instructions that are easier to follow. However, it still **expects you to understand what is happening and adjust specific steps to your particular environment**. It is recommended that you familiarize yourself with entire document before taking any action, including [](#additional-setup-instructions) section.
 :::
 
+This page covers manual installation of Kustosz. It's intended for users who require maximum flexibility or want deeper understanding of Kustosz deployments. Majority of users should be able to deploy Kustosz using [automatic installer](./vps-installer).
+
 ## Prerequisites
 
-Kustosz is web application. You probably want it available under a dedicated (sub)domain that supports secure HTTPS connection.
+Kustosz is web application. You probably want it available under a dedicated (sub)domain that supports secure HTTPS connection. Configuration of domain, HTTPS and access control is outside of scope of this guide.
 
 There are few dependencies that you absolutely must meet:
 

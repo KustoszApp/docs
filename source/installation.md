@@ -37,7 +37,9 @@ While you can use above command to start and run your main instance of Kustosz, 
 
 * [Containers](./installation/containers) - docker and podman, including docker-compose and podman pods
 * [Heroku](./installation/heroku)
-* [Your own server](./installation/vps) - including Raspberry Pi, DigitalOcean Droplets, VPS, virtual machines and shared hosting accounts
+* [Your own server](./installation/vps-installer) - including Raspberry Pi, DigitalOcean Droplets, VPS, virtual machines and shared hosting accounts
+    * [Using installer](./installation/vps-installer)
+    * [Manual installation](./installation/vps)
 
 ## Quick overview for software developers
 
