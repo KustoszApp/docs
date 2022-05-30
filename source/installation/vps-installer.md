@@ -31,6 +31,30 @@ You need superuser (root) access to machine where Kustosz is installed. You can 
     - refer to backend configuration page
     - refer to installer configuration page
 
+
+```{code-block} yaml
+:caption: inventory.yml
+:emphasize-lines: 5,8,9
+
+all:
+  children:
+    kustosz:
+      hosts:
+        host_ip_or_name
+      vars:
+        ansible_port: 22
+        ansible_user: 'name_of_user_to_connect'
+        ansible_ssh_private_key_file: '/path/to/file/id_rsa'
+
+        kustosz_nginx_server_name: "host_domain_name"
+        web_user_name: kustosz
+        web_user_password: kustosz
+```
+
+    # this requires ansible 2.11
+    ansible-playbook kustosz.install.playbook -i ./inventory.yml
+
+
 ## Running the installer
 
 - command to run
