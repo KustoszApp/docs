@@ -72,25 +72,47 @@ Version of [Kustosz server](https://github.com/KustoszApp/server) to install. Sp
 
 ## `venv_path`
 
+Directory where Kustosz virtual environment will be created.
+
 ## `force_install_backend`
+
+By default, installer tries to *not* install server package - it will do so only if it was unable to determine installed version, or when requested version is different than installed version. By setting this to `true`, installer will always create new virtual environment and install Kustosz backend server.
 
 ## `force_install_frontend`
 
+By default, installer tries to *not* install frontend files - it will do so only if it was unable to determine installed version, or when requested version is different than installed version. By setting this to `true`, installer will always remove existing frontend files and download fresh copy from GitHub.
+
 ## `extra_python_packages`
+
+Any extra packages you want to install in Kustosz virtual environment. This variable is passed to `python -m pip install`. You may use it to install memcached driver or force specific version of Django.
 
 ## `kustosz_base_dir`
 
+Value of `$KUSTOSZ_BASE_DIR` environment variable. Kustosz will read settings from directory created here.
+
 ## `db_path`
+
+Directory where default SQLite database file will be created.
 
 ## `settings_path`
 
+Directory where `settings.yaml` and `settings.local.yaml` files will be put. Kustosz server requires this to be `$KUSTOSZ_BASE_DIR/settings`.
+
 ## `frontend_path`
+
+Directory where frontend files will be downloaded. This is referenced in NGINX virtual host configuration file, so NGINX server user needs to be able to read it. If you decide to use [WhiteNoise](https://whitenoise.evans.io/en/stable/), that path should be referenced in `STATICFILES_DIRS`.
 
 ## `settings_local_path`
 
+A **local** path to file that will become `settings.local.yaml` (see [Local files section on backend configuration page](./backend.md#local-files)). This file is input value to [`ansible.builtin.template`](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/template_module.html), which means that you can use [jinja2](https://jinja.palletsprojects.com/) and all the variables documented on this page.
+
 ## `configure_nginx_server`
 
+When `false`, during post-installation phase installer will not run steps related to NGINX server configuration. These steps are: configuring SELinux variables to allow NGINX to make HTTP connections, creating Kustosz virtual host configuration file in `/etc/nginx/` and running certbot, assuming `run_certbot` is `true`.
+
 ## `configure_system_services`
+
+When `false`, during post-installation phase installer will not run steps related to system services configuration. These steps are: putting special dispatcher script in [`systemd_dispatcher_path`](#systemd-dispatcher-path), creating template service file under `/etc/systemd/system/`, and starting and enabling four background tasks for Kustosz (gunicorn server, two Celery workers, and Celery beat).
 
 ## `nginx_template_path`
 
