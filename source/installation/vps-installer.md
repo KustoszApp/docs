@@ -61,13 +61,13 @@ all:
 
 `vars` section is optional, but recommended. Apart from [Ansible connection variables](https://docs.ansible.com/ansible/2.9/reference_appendices/special_variables.html#connection-variables), you should consider setting following variables:
 
-* `web_user_name` - user name that you will use while logging into Kustosz
-* `web_user_password` - password that you will use while logging into Kustosz
+* `web_user_name` - user name that you will use to log in to Kustosz
+* `web_user_password` - password that you will use to log in to Kustosz
 * `settings_local_path` - **local** path to `settings.local.yaml` file (see [backend configuration](/configuration/backend.md) page)
 * `opml_local_path` - **local** path to directory with OPML files that should be imported during installation
 * `kustosz_nginx_server_name` - domain name of your Kustosz instance (technically, value of [`server_name` directive in NGINX configuration file](https://nginx.org/en/docs/http/server_names.html))
 * `run_certbot` - whether [`certbot`](https://certbot.eff.org/) should be called to configure [Let's Encrypt](https://letsencrypt.org/) TLS certificate
-* `certbot_extra_args` - additional [`certbot` command-line options](https://eff-certbot.readthedocs.io/en/stable/using.html#certbot-command-line-options=)
+* `certbot_extra_args` - additional [`certbot` command-line options](https://eff-certbot.readthedocs.io/en/stable/using.html#certbot-command-line-options)
 
 Full list of variables recognized by the installer is available on [installer configuration](/configuration/installer.md) page.
 

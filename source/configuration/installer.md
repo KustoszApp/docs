@@ -110,30 +110,68 @@ A **local** path to file that will become `settings.local.yaml` (see [Local file
 
 When `false`, during post-installation phase installer will not run steps related to NGINX server configuration. These steps are: configuring SELinux variables to allow NGINX to make HTTP connections, creating Kustosz virtual host configuration file in `/etc/nginx/` and running certbot, assuming `run_certbot` is `true`.
 
+Set to `false` when you don't have root permissions on the machine or when you don't use NGINX as HTTP server.
+
 ## `configure_system_services`
 
 When `false`, during post-installation phase installer will not run steps related to system services configuration. These steps are: putting special dispatcher script in [`systemd_dispatcher_path`](#systemd-dispatcher-path), creating template service file under `/etc/systemd/system/`, and starting and enabling four background tasks for Kustosz (gunicorn server, two Celery workers, and Celery beat).
 
+Set to `false` when you don't have root permissions on the machine or when you don't use systemd as init.
+
 ## `nginx_template_path`
+
+A **local** path to file that will become NGINX virtual host configuration file. This file is input value to [`ansible.builtin.template`](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/template_module.html), which means that you can use [jinja2](https://jinja.palletsprojects.com/) and all the variables documented on this page.
 
 ## `kustosz_internal_port`
 
+Port to which gunicorn (web server platform that runs Kustosz) process should bind to. Most of userspace web servers bind to port 8000, 8080, or similar, and depending on number of services you are running, the default port might be already taken.
+
 ## `kustosz_nginx_listen`
+
+**External** port on which Kustosz should be accessible. NGINX must listen on this port. Usually it's 80 or 443.
+
+This value is passed as argument to [NGINX `listen` directive](https://nginx.org/en/docs/http/ngx_http_core_module.html#listen).
 
 ## `kustosz_nginx_server_name`
 
+Domain name of Kustosz instance. In standard NGINX setup, multiple sites listen on the same port, and NGINX matches request's `Host` header against `server_name` directive to decide which virtual host should handle specific request.
+
+This value is passed as argument to [NGINX `server_name` directive](https://nginx.org/en/docs/http/server_names.html).
+
 ## `kustosz_nginx_extra_config`
+
+Anything you want to include in NGINX virtual host configuration file for Kustosz.
 
 ## `run_certbot`
 
+When `true`, installer will run [`certbot`](https://certbot.eff.org/) to configure [Let's Encrypt](https://letsencrypt.org/) TLS certificate on virtual host.
+
+Installer will **not** check if certbot is available or configured correctly - it blindly tries to run the binary. Set this to `true` only if you actually use certbot.
+
 ## `certbot_extra_args`
+
+Additional [command-line options passed to `certbot`](https://eff-certbot.readthedocs.io/en/stable/using.html#certbot-command-line-options). By default, installer includes `--non-interactive`, `--nginx` and `--domains $kustosz_nginx_server_name`.
+
+You need to ensure that certbot is able to run without any human interaction. At the very least, you should include `--agree-tos` and `-m EMAIL@example.com`.
 
 ## `systemd_dispatcher_path`
 
-## `opml_path`
+Path to background services dispatcher script used by systemd. Dispatcher script exists to ensure that background processes run with correct environment variables set.
 
 ## `opml_local_path`
 
+**Local** path to directory with OPML files. Directory must exist.
+
+When defined, installer will import OPML files into Kustosz.
+
+## `opml_path`
+
+Path on server where OPML files will be uploaded. When running installer on machine that will run Kustosz, this path should still be different than `opml_local_path`.
+
 ## `web_user_name`
 
+User name that you will use to log in to Kustosz web interface.
+
 ## `web_user_password`
+
+Password that you will use to log in to Kustosz web interface.
