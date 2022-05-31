@@ -39,18 +39,18 @@ In root directory of installer, create file named `Vagrantfile` with following c
 # vi: set ft=ruby :
 
 Vagrant.configure("2") do |config|
-  config.vm.define "centos8" do |centos|
-    centos.vm.box = "generic/centos8"
+  config.vm.define "centos8", autostart: false do |centos8|
+    centos8.vm.box = "generic/centos8"
+    centos8.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
   end
-  config.vm.define "ubuntu2004" do |ubuntu2004|
+  config.vm.define "ubuntu2004", autostart: true do |ubuntu2004|
     ubuntu2004.vm.box = "generic/ubuntu2004"
+    ubuntu2004.vm.network "forwarded_port", guest: 80, host: 8081, host_ip: "127.0.0.1"
   end
-  config.vm.define "ubuntu2204" do |ubuntu2204|
+  config.vm.define "ubuntu2204", autostart: false do |ubuntu2204|
     ubuntu2204.vm.box = "generic/ubuntu2204"
-    ubuntu2204.vm.box_version = "3.6.13"
+    ubuntu2204.vm.network "forwarded_port", guest: 80, host: 8082, host_ip: "127.0.0.1"
   end
-
-  config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
 
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "playbooks/playbook.yml"
@@ -76,15 +76,7 @@ Create new file `playbooks/vagrant.yml` with following content:
 :caption: playbooks/vagrant.yml
 
 - name: "Install Kustosz on Vagrant"
-  hosts: all
-  collections:
-    - kustosz.install
-  roles:
-    - install
-    - prepare
-    - system_setup
-    - setup
-
+  import_playbook: kustosz.install.playbook
   vars:
     use_system_python: true
     kustosz_nginx_server_name: "127.0.0.1 localhost"
