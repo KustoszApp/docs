@@ -9,5 +9,6 @@ development/backend
 development/frontend
 development/documentation
 development/website
+development/installer
 development/release-policy
 :::
