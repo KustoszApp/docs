@@ -1,6 +1,6 @@
 # Installer
 
-[Installer](../installation/vps-installer) is implemented as [Ansible](https://www.ansible.com/) collection and is configured the same way as other Ansible roles - by putting variable definitions in place where Ansible can read them.
+[Installer](../installation/vps-installer) is implemented as [Ansible](https://www.ansible.com/) collection and is configured the same way other Ansible roles are - by putting variable definitions in place where Ansible can read them.
 
 Ansible supports [multiple levels of variable precendence rules](https://docs.ansible.com/ansible/latest/user_guide/playbooks_variables.html#variable-precedence-where-should-i-put-a-variable). Unless you want to incorporate installer in your own custom playbook, it's best to define variables in inventory file - just as it was shown on [installer](../installation/vps-installer.md#preparing-installation-environment) page.
 
@@ -12,7 +12,7 @@ Username of system user that will run Kustosz. User is created automatically, un
 
 ## `system_user_home`
 
-Path to home directory of system user that will run Kustosz. Is created automatically when creating user. Most of paths mentioned below are by default constructed relative to this directory.
+Path to home directory of system user that will run Kustosz. Directory is created automatically when creating user. Most of paths mentioned below are by default constructed relative to this directory.
 
 ## `system_user_shell`
 
@@ -26,7 +26,7 @@ Set to `false` only when you don't have root permissions on the machine.
 
 ## `use_postgres`
 
-When `true`, installer will install system packages required to build psycopg2 (Python PostgreSQL driver), as well as psycopg2 itself in Kustosz virtual environment. This preapres your system to use Kustosz with PostgreSQL database.
+When `true`, installer will install system packages required to build psycopg2 (Python PostgreSQL driver), as well as psycopg2 itself in Kustosz virtual environment. This prepares your system to use Kustosz with PostgreSQL database.
 
 Note that installer will **not** install Postgres itself, will not create Postgres database and will not configure Kustosz to connect with Postgres. Postgres configuration must be done manually.
 

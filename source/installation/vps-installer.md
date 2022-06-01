@@ -12,7 +12,7 @@ Kustosz is web application. You probably want to access it from any network usin
 
 Kustosz needs at least 256 MiB of memory.
 
-Installer must be run on Linux machine and it needs to connect with the machine where Kustosz will be installed. You can run the installer on the machine where Kustosz will be running.
+Installer must be run on Linux machine and it needs to connect to the machine where Kustosz will be installed. You can run the installer on the machine where Kustosz will be running.
 
 You need superuser (root) access to machine where Kustosz is installed. You can configure installer to skip steps that require elevated permissions.
 
@@ -31,7 +31,7 @@ Now you can install the installer itself:
 
     ansible-galaxy collection install kustosz.install
 
-The last piece is creating inventory file. It tells Ansible where your host is and allows you to configure the installer (see [Installer configuration](/configuration/installer.md) page).
+You also need an inventory file. It tells Ansible where your host is and allows you to configure the installer (see [Installer configuration](/configuration/installer.md) page).
 
 ```{code-block} yaml
 :caption: inventory.yml
@@ -59,7 +59,7 @@ all:
           --email somename@example.com
 ```
 
-`vars` section is optional, but recommended. Apart from [Ansible connection variables](https://docs.ansible.com/ansible/2.9/reference_appendices/special_variables.html#connection-variables), you should consider setting following variables:
+`vars` section is optional, but recommended. Apart from [Ansible connection variables](https://docs.ansible.com/ansible/latest/reference_appendices/special_variables.html#connection-variables), you should consider setting following variables:
 
 * `web_user_name` - user name that you will use to log in to Kustosz
 * `web_user_password` - password that you will use to log in to Kustosz
@@ -77,7 +77,7 @@ Full list of variables recognized by the installer is available on [installer co
 
 When installer finishes, open [KUSTOSZ_SERVER_NAME/ui/](https://KUSTOSZ_SERVER_NAME/ui/) in your web browser to access Kustosz. 
 
-If installer fails for any reason (usually due to intermittent problem with access to external resources), you can run above command again. Installer will automatically pick up where it left.
+If installer fails for any reason (e.g. due to intermittent problem with access to external resources), you can run above command again. Installer will automatically pick up where it left.
 
 Running above command on server with Kustosz already installed is also safe, as installer will not make any changes that are not required. You can use the same command to upgrade Kustosz to the newest version.
 

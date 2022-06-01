@@ -26,9 +26,9 @@ sudo mount --bind ./kustosz-installer/ ~/.ansible/collections/ansible_collection
 
 ## Setting up Vagrant
 
-Installer is ready to be run, but you need a target to run it against. We suggest using [Vagrant](https://www.vagrantup.com/), which provides easy way to manage local virtual machines.
+You need a machine you can test installer on. We suggest using [Vagrant](https://www.vagrantup.com/), which provides easy way to manage local virtual machines.
 
-You need Vagrant and plugin to virtual machine provider. [vagrant-libvirt](https://github.com/vagrant-libvirt/vagrant-libvirt) is usually included in distribution repository, making it one of the easiest to set up - just install vagrant and vagrant-libvirt, make sure that system services are started, add your user to `libvirt` group and you are good to go. When in doubt, consult your distribution documentation.
+You need Vagrant and plugin to virtual machine provider. [vagrant-libvirt](https://github.com/vagrant-libvirt/vagrant-libvirt) included in most distributions, making it one of the easiest to set up - just install vagrant and vagrant-libvirt packages, make sure libvirt system service is started, add your user to `libvirt` group and you are good to go. When in doubt, consult your distribution documentation.
 
 In root directory of installer, create file named `Vagrantfile` with following content:
 
@@ -63,14 +63,16 @@ end
 
 Now you can use following commands:
 
-* `vagrant up centos8` - create new centos8 machine, start it and run installer against it
-* `vagrant provision centos8` - re-run installer against started virtual machine; useful for testing failing scenarios and automatic pick-up of remaining work
-* `vagrant ssh centos8` - ssh into started virtual machine; useful for investigating problems and checking if installer worked as intended
+* `vagrant up centos8` - create new CentOS machine, start it and run installer against it
+* `vagrant provision centos8` - re-run installer against started virtual machine; useful for testing failure scenarios
+* `vagrant ssh centos8` - ssh into started virtual machine
 * `vagrant delete -f centos8` - stop and remove running virtual machine
+
+Vagrant will automatically route network traffic from `host:` port to virtual machine. For example, you can access Kustosz running on Ubuntu 20.04 by opening [localhost:8081/ui](http://localhost:8081/ui/).
 
 ## Changing development version configuration
 
-Create new file `playbooks/vagrant.yml` with following content:
+If you want to test impact of various [configuration variables](../configuration/installer), the best way is to create new file `playbooks/vagrant.yml` with following content:
 
 ```{code-block} yaml
 :caption: playbooks/vagrant.yml
