@@ -6,7 +6,7 @@
 
 Focus on the worthwhile content with Kustosz, open source self-hosted web application.
 
-This repository source code for documentation available at [docs.kustosz.org](https://docs.kustosz.org).
+This repository contains source code for documentation available at [docs.kustosz.org](https://docs.kustosz.org).
 
 ## Installation
 
