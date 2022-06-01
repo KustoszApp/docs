@@ -19,6 +19,57 @@ You can use your keyboard to quickly move through articles:
 * `o`, `Space`, `Enter` - open currently selected article, or close if it's already opened
 * `m` - mark currently selected article as read, or mark it back as unread
 
+## Adding web page manually
+
+You can add any web page to Kustosz. This is especially useful for older articles that no longer appear in website feed, for articles published by websites that don't publish feed, or when you don't want to subscribe to feed.
+
+### From web browser
+
+This method requires token. See [](#how-to-obtain-the-token) below.
+
+[Bookmarklets](https://en.wikipedia.org/wiki/Bookmarklet) are special bookmarks that execute JavaScript in the context of currently opened page. They are supported by all major web browsers.
+
+Create new bookmark with following "URL"; change `KUSTOSZ_URL` to your instance domain name, and `KUSTOSZ_TOKEN` to your token:
+
+```
+javascript:(function(){fetch('https://KUSTOSZ_URL/api/v1/entries/manual_add', {method: 'POST', headers: {'Content-Type': 'application/json', 'Authorization': 'Token KUSTOSZ_TOKEN'}, body: JSON.stringify({link: window.location.href.split("#")[0]})})})()
+```
+
+Whenever you open a page you would like to add to Kustosz, click a bookmark you have added. Instead of opening bookmarked page, browser will send HTTP request to Kustosz, and Kustosz will add visited page.
+
+On mobile device, you need to tap on address bar and start typing your bookmark name. Opening bookmark from separate Bookmarks screen will not work.
+
+### From iOS device
+
+This method requires token. See [](#how-to-obtain-the-token) below.
+
+iOS comes with "Shortcuts" app. You can use it to automate certain tasks on your mobile device.
+
+Just open ["Add to Kustosz" shortcut page](https://www.icloud.com/shortcuts/7ad00fc49fd84e1aaeae0a1a1a1b7726) on your iPhone or iPad. You will be asked if you want to add new shortcut. Device will also ask for your Kustosz instance domain name and token.
+
+After shortcut has been added, there will be "Add to Kustosz" action available in website sharing menu.
+
+### From terminal
+
+This method requires token. See [](#how-to-obtain-the-token) below.
+
+You can use curl, which should be available on most Linux machines, to send HTTP request from your terminal:
+
+```
+curl -X POST 'http://KUSTOSZ_URL/api/v1/entries/manual_add' \
+    -H 'Content-Type: application/json' \
+    -H 'Authorization: Token KUSTOSZ_TOKEN' \
+    -d '{"link": "http://URL_OF_WEB_PAGE"}'
+```
+
+### From the machine where Kustosz is installed
+
+This method doesn't require any setup, but can be exercised only on machine where Kustosz is installed:
+
+```
+kustosz-manager add_entry --link 'http://URL_OF_WEB_PAGE'
+```
+
 ## Automatic channels update frequency
 
 When editing a channel, you can set automatic update frequency - how often Kustosz should check for new content. Default value is every one hour. If channel is lower priority for you or is known to publish seldom, you can check it less often. If you want to ensure that you learn about new content quickly enough and channel publishes a lot of content, you can check it more frequently.
@@ -55,27 +106,6 @@ Deduplication works only across channels, i.e. entries from one channel are neve
 
 Deduplication algorithm looks into entry GID, normalized link and author-title pair. If any of these values is the same as for one of other entries, latter entry is considered a duplicate. By default, deduplication algorithm looks into all entries added in last 2 days.
 
-## Adding web page manually
-
-You can add any web page to Kustosz. This is especially useful for older articles that no longer appear in website feed, for articles published by websites that don't publish feed, or when you don't want to subscribe to feed.
-
-The easiest way to add specific web page is through following command:
-
-```
-kustosz-manager add_entry --link 'http://URL_OF_WEB_PAGE'
-```
-
-Alternatively, you can add web page by sending carefully-crafted HTTP request to your Kustosz server. This can be done from any computer, but requires valid authorization token. It can be obtained by looking at requests in web browser development tools. All requests should contain `Authorization` header.
-
-Example below uses curl, which should be available on most Linux machines:
-
-```
-curl -X POST 'http://KUSTOSZ_SERVER_ADDRESS/api/v1/entries/manual_add' \
-    -H 'Content-Type: application/json' \
-    -H 'Authorization: Token 0123456789abcdef0123456789abcdef01234567' \
-    -d '{"link": "http://URL_OF_WEB_PAGE"}'
-```
-
 ## Maintenance section
 
 Maintenance section provides views to quickly (de)activate multiple channels at once.
@@ -97,3 +127,15 @@ These channels are online and can be accessed, but have not produced a new entry
 These channels have "active" flag turned off. You can activate them back or delete them.
 
 Deleting channel automatically deletes all channel entries. However, if any entry is tagged, Kustosz will ask if you want to delete tagged entries or keep them. If you decide to keep them, they will be moved from deleted channel to special "Manually added" channel with id 1.
+
+## How to obtain the token?
+
+Authorization token is like password - it allows Kustosz to decide if incoming HTTP request should be allowed to perform an action.
+
+Token is included in all requests that Kustosz UI sends to server. You can open web browser development tools (F12), click Network tab and select any request of XHR type. In Request Headers section, there will be `Authorization` header with value `Token 0123456789abcdef0123456789abcdef01234567`.
+
+Another way is running following command:
+
+```
+kustosz-manager drf_create_token KUSTOSZ_USER
+```
