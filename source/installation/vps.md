@@ -178,10 +178,7 @@ celery -A kustosz worker -l INFO -Q celery
 celery -A kustosz worker -l INFO -Q feed_fetcher --concurrency 1
 ```
 
-It is recommended that you use process supervisor to run commands above. Most Linux systems come with systemd, which may be used for that purpose. Another option is [Supervisor](http://supervisord.org/). See [](#use-supervisor-to-ensure-background-processes-are-running).
-
-
-% FIXME: add section on systemd
+It is recommended that you use process supervisor to run commands above. Most Linux systems come with systemd, which may be used for that purpose - see [](#use-systemd-to-ensure-background-processes-are-running). Another option is [Supervisor](http://supervisord.org/) - see [](#use-supervisor-to-ensure-background-processes-are-running).
 
 ## Run gunicorn
 
@@ -288,6 +285,23 @@ To run it with cron, use `crontab -e` command and add the following line:
 
 cron jobs usually run in special environment that differs from normal shell. Remember that Kustosz command line tools require [few environment variables](#prepare-kustosz-server-environment) and [active virtual environment](#install-kustosz-server). You might want to create simple wrapper script that sets up these variables before running the command. Example of such wrapper is available in source code repository in [`etc/cron/kustosz-fetch-content.sh`](https://github.com/KustoszApp/server/blob/main/etc/cron/kustosz-fetch-content.sh).
 
+### Use systemd to ensure background processes are running
+
+Kustosz requires some background processes to run all the time - main Celery process, Celery beat process (optionally), gunicorn WSGI server (optionally). One way to ensure they are running is [systemd](https://www.freedesktop.org/wiki/Software/systemd/). Unlike supervisor, systemd can start processes automatically during system boot.
+
+Systemd is default init in most of Linux distributions.
+
+Sample systemd unit file is available in source code repository in [`/etc/systemd/system/kustosz@.service`](https://github.com/KustoszApp/server/blob/main/etc/systemd/system/kustosz%40.service). This is unit template that calls dispatcher script to start the actual process. Dispatcher script is responsible for setting [required environment variables](#prepare-kustosz-server-environment) and [activating virtual environment](#install-kustosz-server). Sample dispatcher script is provided in [`/etc/systemd/bin/kustosz-service-dispatcher`](https://github.com/KustoszApp/server/blob/main/etc/systemd/bin/kustosz-service-dispatcher).
+
+Put dispatcher script anywhere on your file system and unit file in `/etc/systemd/system/`. Start and enable all background processes:
+
+```
+systemctl enable --now kustosz@worker.service
+systemctl enable --now kustosz@feedfetcher.service
+systemctl enable --now kustosz@clock.service
+systemctl enable --now kustosz@web.service
+```
+
 ### Use supervisor to ensure background processes are running
 
 Kustosz requires some background processes to run all the time - main Celery process, Celery beat process (optionally), gunicorn WSGI server (optionally). One way to ensure they are running is [supervisor](http://supervisord.org/).
@@ -303,9 +317,6 @@ supervisord -c path/to/supervisord.conf
 ```
 
 supervisor can ensure that certain processes are running, but it has one drawback - you need to start it manually. supervisor documentation has section on [starting supervisord on system startup](http://supervisord.org/running.html#running-supervisord-automatically-on-startup). Some Linux distributions, like Debian, offer supervisor package with init daemon script that can be used to start it automatically. If you go down this path, remember that Kustosz command line tools require [few environment variables](#prepare-kustosz-server-environment) and [active virtual environment](#install-kustosz-server). You might also need to ensure correct file permissions, as supervisor will be running as privileged user, while Kustosz was installed for standard user.
-
-% FIXME:
-% ### Use systemd to ensure background processes are running
 
 ### Use gunicorn to serve static files
 
