@@ -211,7 +211,7 @@ After installing NGINX, create `/etc/nginx/sites-available/kustosz` file with fo
 
 ```{code-block}
 :caption: /etc/nginx/sites-available/kustosz
-:emphasize-lines: 2,19
+:emphasize-lines: 2,9,21
 
 upstream kustosz {
     # port number here must be the same as port number in gunicorn --bind command
@@ -221,13 +221,16 @@ upstream kustosz {
 server {
 
     listen 80;
+    # domain name that Kustosz will be available at
+    server_name localhost;
 
     location / {
         proxy_pass http://kustosz;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
         proxy_redirect off;
-        client_max_body_size 100M;
+        client_max_body_size 10M;
     }
 
     location /ui/ {
@@ -245,10 +248,8 @@ ln -s /etc/nginx/sites-available/kustosz /etc/nginx/sites-enabled/
 systemctl restart nginx
 ```
 
-:::{admonition} NGINX default configuration and file permissions
+:::{admonition} NGINX file permissions
 :class: note
-
-Single NGINX server can serve multiple websites. If you have just installed NGINX, it's likely that it already serves default "NGINX is working" site. It probably binds to port 80, same as Kustosz. This site is configured in `/etc/nginx/sites-enabled/default` file, and it is safe to remove it.
 
 NGINX often runs as an user with limited permissions, such as `www`, `www-data`, `nginx` or `nobody`. You need to ensure that this user has permissions to read extracted frontend files. It also needs executable bit on all directories in the path.
 :::
