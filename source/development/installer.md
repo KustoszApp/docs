@@ -28,7 +28,7 @@ sudo mount --bind ./kustosz-installer/ ~/.ansible/collections/ansible_collection
 
 You need a machine you can test installer on. We suggest using [Vagrant](https://www.vagrantup.com/), which provides easy way to manage local virtual machines.
 
-You need Vagrant and plugin to virtual machine provider. [vagrant-libvirt](https://github.com/vagrant-libvirt/vagrant-libvirt) included in most distributions, making it one of the easiest to set up - just install vagrant and vagrant-libvirt packages, make sure libvirt system service is started, add your user to `libvirt` group and you are good to go. When in doubt, consult your distribution documentation.
+You need Vagrant and plugin to virtual machine provider. [vagrant-libvirt](https://github.com/vagrant-libvirt/vagrant-libvirt) is included in most distributions, making it one of the easiest to set up - just install vagrant and vagrant-libvirt packages, make sure libvirt system service is started, add your user to `libvirt` group and you are good to go. When in doubt, consult your distribution documentation.
 
 In root directory of installer, create file named `Vagrantfile` with following content:
 
@@ -43,11 +43,11 @@ Vagrant.configure("2") do |config|
     centos8.vm.box = "generic/centos8"
     centos8.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
   end
-  config.vm.define "ubuntu2004", autostart: true do |ubuntu2004|
+  config.vm.define "ubuntu2004", autostart: false do |ubuntu2004|
     ubuntu2004.vm.box = "generic/ubuntu2004"
     ubuntu2004.vm.network "forwarded_port", guest: 80, host: 8081, host_ip: "127.0.0.1"
   end
-  config.vm.define "ubuntu2204", autostart: false do |ubuntu2204|
+  config.vm.define "ubuntu2204", autostart: true do |ubuntu2204|
     ubuntu2204.vm.box = "generic/ubuntu2204"
     ubuntu2204.vm.network "forwarded_port", guest: 80, host: 8082, host_ip: "127.0.0.1"
   end

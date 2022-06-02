@@ -16,7 +16,7 @@ Path to home directory of system user that will run Kustosz. Directory is create
 
 ## `system_user_shell`
 
-Shell of system user that will run Kustosz. Is set automatically when creating user. Should be POSIX-compliant (i.e. **not** [fish](https://fishshell.com/)). There's little reason to log in as Kustosz user, apart from occasional maintenance task.
+Shell of system user that will run Kustosz. Shell is set automatically when creating user. Should be POSIX-compliant (i.e. **not** [fish](https://fishshell.com/)). There's little reason to log in as Kustosz user, apart from occasional maintenance task.
 
 ## `run_system_requirements_root`
 
@@ -32,7 +32,7 @@ Note that installer will **not** install Postgres itself, will not create Postgr
 
 ## `use_system_nodejs`
 
-When `true`, installer will use system-provided [Node.JS](https://nodejs.org/) instead of [NVM](https://github.com/nvm-sh/nvm). Node.JS is needed by [kustosz-node-readability](https://github.com/KustoszApp/kustosz-node-readability). While kustosz-node-readability should work on all Node.JS LTS versions, it is only tested with Node.JS 16.
+When `true`, installer will use system-provided [Node.JS](https://nodejs.org/) instead of [NVM](https://github.com/nvm-sh/nvm)-provided one. Node.JS is needed by [kustosz-node-readability](https://github.com/KustoszApp/kustosz-node-readability). While kustosz-node-readability should work on all Node.JS LTS versions, it is only tested with Node.JS 16.
 
 Note that installer will **not** check if Node.JS is installed at all.
 
@@ -46,7 +46,7 @@ Directory where NVM itself and NVM-managed Node.JS will be installed. This is ca
 
 ## `use_system_python`
 
-When `true`, installer will use system-provided [Python](https://www.python.org/) instead of [pyenv](https://github.com/pyenv/pyenv). Kustosz requires Python 3.9 or newer.
+When `true`, installer will use system-provided [Python](https://www.python.org/) instead of [pyenv](https://github.com/pyenv/pyenv)-provided one. Kustosz requires Python 3.9 or newer.
 
 Note that installer will check Python version and will emit appropriate failure message if system-provided Python version is too old.
 
@@ -146,7 +146,7 @@ Anything you want to include in NGINX virtual host configuration file for Kustos
 
 When `true`, installer will run [`certbot`](https://certbot.eff.org/) to configure [Let's Encrypt](https://letsencrypt.org/) TLS certificate on virtual host.
 
-Installer will **not** check if certbot is available or configured correctly - it blindly tries to run the binary. Set this to `true` only if you actually use certbot.
+Installer will **not** check if certbot is available or configured correctly - it blindly tries to run the binary. Set this to `true` only if you actually use certbot and have configured it on the machine.
 
 ## `certbot_extra_args`
 

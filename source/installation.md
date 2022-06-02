@@ -51,4 +51,4 @@ Kustosz requires Celery process to handle background tasks. Celery requires tran
 
 You have to trigger channel update process periodically. We provide ready-to-use Celery Beat configuration, but it requires starting and maintaining additional Celery process. If you don't like this, you can use OS scheduler, such as cron or systemd.
 
-If you are unsure about any of the above, you can find detailed instructions on [custom server](./installation/vps) page.
+If you are unsure about any of the above, you can find detailed instructions on [manual installation](./installation/vps) page.

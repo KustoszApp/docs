@@ -29,7 +29,7 @@ This method requires token. See [](#how-to-obtain-the-token) below.
 
 [Bookmarklets](https://en.wikipedia.org/wiki/Bookmarklet) are special bookmarks that execute JavaScript in the context of currently opened page. They are supported by all major web browsers.
 
-Create new bookmark with following "URL"; change `KUSTOSZ_URL` to your instance domain name, and `KUSTOSZ_TOKEN` to your token:
+Create new bookmark. Copy the string below and change `KUSTOSZ_URL` to your instance domain name, and `KUSTOSZ_TOKEN` to your token. Changed string put in "URL" field of new bookmark.
 
 ```
 javascript:(function(){fetch('https://KUSTOSZ_URL/api/v1/entries/manual_add', {method: 'POST', headers: {'Content-Type': 'application/json', 'Authorization': 'Token KUSTOSZ_TOKEN'}, body: JSON.stringify({link: window.location.href.split("#")[0]})})})()
@@ -45,7 +45,7 @@ This method requires token. See [](#how-to-obtain-the-token) below.
 
 iOS comes with "Shortcuts" app. You can use it to automate certain tasks on your mobile device.
 
-Just open ["Add to Kustosz" shortcut page](https://www.icloud.com/shortcuts/7ad00fc49fd84e1aaeae0a1a1a1b7726) on your iPhone or iPad. You will be asked if you want to add new shortcut. Device will also ask for your Kustosz instance domain name and token.
+Open ["Add to Kustosz" shortcut page](https://www.icloud.com/shortcuts/7ad00fc49fd84e1aaeae0a1a1a1b7726) on your iPhone or iPad and confirm that you want to open Shortcuts app. App will guide you through adding new shortcut, including setting up Kustosz instance address and token.
 
 After shortcut has been added, there will be "Add to Kustosz" action available in website sharing menu.
 
@@ -64,7 +64,7 @@ curl -X POST 'http://KUSTOSZ_URL/api/v1/entries/manual_add' \
 
 ### From the machine where Kustosz is installed
 
-This method doesn't require any setup, but can be exercised only on machine where Kustosz is installed:
+This method doesn't require any setup, but can only be exercised on a machine where Kustosz is installed:
 
 ```
 kustosz-manager add_entry --link 'http://URL_OF_WEB_PAGE'
@@ -130,9 +130,9 @@ Deleting channel automatically deletes all channel entries. However, if any entr
 
 ## How to obtain the token?
 
-Authorization token is like password - it allows Kustosz to decide if incoming HTTP request should be allowed to perform an action.
+Authorization token is like password - it allows Kustosz to decide if incoming HTTP request should be allowed to perform an action. You should not share authorization token with other people.
 
-Token is included in all requests that Kustosz UI sends to server. You can open web browser development tools (F12), click Network tab and select any request of XHR type. In Request Headers section, there will be `Authorization` header with value `Token 0123456789abcdef0123456789abcdef01234567`.
+Token is included in all requests that Kustosz UI sends to server. You can open web browser development tools (F12), click Network tab and select any request of XHR type. In Request Headers section, there will be `Authorization` header with value `Token 0123456789abcdef0123456789abcdef01234567`. This long string of random letters and numbers is a token.
 
 Another way is running following command:
 
