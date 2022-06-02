@@ -102,6 +102,12 @@ Directory where `settings.yaml` and `settings.local.yaml` files will be put. Kus
 
 Directory where frontend files will be downloaded. This is referenced in NGINX virtual host configuration file, so NGINX server user needs to be able to read it. If you decide to use [WhiteNoise](https://whitenoise.evans.io/en/stable/), that path should be referenced in `STATICFILES_DIRS`.
 
+## `kustosz_settings_allowed_hosts`
+
+A list of strings representing the host/domain names that this Django site can serve. This is the same as [Django's `ALLOWED_HOSTS` setting](https://docs.djangoproject.com/en/stable/ref/settings/#allowed-hosts).
+
+When this is set to empty list, installer will construct new list from `kustosz_nginx_server_name` value. If you want Kustosz to be available under single domain name, it's recommended to set only `kustosz_nginx_server_name`.
+
 ## `settings_local_path`
 
 A **local** path to file that will become `settings.local.yaml` (see [Local files section on backend configuration page](./backend.md#local-files)). This file is input value to [`ansible.builtin.template`](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/template_module.html), which means that you can use [jinja2](https://jinja.palletsprojects.com/) and all the variables documented on this page.
