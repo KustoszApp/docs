@@ -50,11 +50,11 @@ That's it! Your Kustosz is now available under [$APP_NAME.herokuapp.com/ui/](htt
 
 ## Importing OPML file
 
-Most feed readers have an option to export list of subscribed channels into OPML file. If you have such file, you can import it during Kustosz deployment. Just create `opml` directory and put XML file there:
+Most feed readers have an option to export list of subscribed channels into OPML file. If you have such file, you can import it during Kustosz deployment. Just create `kustosz/opml` directory and put XML file there:
 
-    mkdir opml
-    cp <path/to/file.xml> opml/
-    git add opml/*.xml
+    mkdir kustosz/opml
+    cp <path/to/file.xml> kustosz/opml/
+    git add kustosz/opml/*.xml
     git commit -m 'Adding OPML file'
 
 Importing OPML file can take some time, depending on number of channels and amount of content they have published. There's no reason to import the same file during every subsequent deployment (e.g. when you update Kustosz to newest version), so once file has been imported, you can tell deployment script to skip this step:
