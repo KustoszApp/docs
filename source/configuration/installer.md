@@ -112,6 +112,10 @@ When this is set to empty list, installer will construct new list from `kustosz_
 
 A **local** path to file that will become `settings.local.yaml` (see [Local files section on backend configuration page](./backend.md#local-files)). This file is input value to [`ansible.builtin.template`](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/template_module.html), which means that you can use [jinja2](https://jinja.palletsprojects.com/) and all the variables documented on this page.
 
+This file will always overwrite existing `setting.local.yaml`. If you have made any changes to your `setting.local.yaml` after installation, make sure this variable is unset during next installer run.
+
+When running installer on machine that will run Kustosz, this path should still be different than `setting.local.yaml`.
+
 ## `configure_nginx_server`
 
 When `false`, during post-installation phase installer will not run steps related to NGINX server configuration. These steps are: configuring SELinux variables to allow NGINX to make HTTP connections, creating Kustosz virtual host configuration file in `/etc/nginx/` and running certbot, assuming `run_certbot` is `true`.
