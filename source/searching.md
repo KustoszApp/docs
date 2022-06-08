@@ -51,6 +51,20 @@ Lookup semantics are generally the same as in Django. See [Django documentation 
     * `endswith`
     * `iendswith`
   -
+* - `reading_time`
+  - * `exact`
+    * `lt`
+    * `gt`
+    * `lte`
+    * `gte`
+  - Estimated time needed to read article, in minutes. Seconds are expressed as fraction of minute, e.g. 1 minute 30 seconds is `1.5`.
+* - `reader_position`
+  - * `exact`
+    * `lt`
+    * `gt`
+    * `lte`
+    * `gte`
+  - Part of article that you have read, as fraction between 0 and 1. Half of article is `0.5`.
 * - `published_time`
   - * `exact`
     * `lt`
