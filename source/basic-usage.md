@@ -6,7 +6,9 @@ Kustosz user interface follows familiar pattern used by many other news reading 
 
 Channel is source of content displayed in Kustosz. Currently RSS, Atom and JSON Feed are supported.
 
-To add new channel, click "Add channel" button on top of navigation pane. In popup that appears, you need to provide full URL to channel (XML file in case of RSS or Atom).
+To add a new channel, click "Add content" button on top of navigation pane. In window that appears, paste URL of website you would like to subscribe to. Kustosz will automatically detect channels provided by the website. Click on channel name to get preview of few latest entries. Click "Add channel" to subscribe to channel.
+
+Alternatively, you can click down arrow right to "Add content" and click "Add channel". In window that appears, you need to provide full URL to XML file. You can also specify channel title and tags.
 
 ## Keyboard navigation
 
@@ -22,6 +24,12 @@ You can use your keyboard to quickly move through articles:
 ## Adding web page manually
 
 You can add any web page to Kustosz. This is especially useful for older articles that no longer appear in website feed, for articles published by websites that don't publish feed, or when you don't want to subscribe to feed.
+
+### From Kustosz
+
+Click "Add content" button on top of navigation pane. In window that appears, paste URL of entry you would like to add. Kustosz will also detect channels provided by website, if any. Click "Add article" to add specified web page.
+
+Alternatively, you can click down arrow right to "Add content" and click "Add article". In window that appears, you need to provide URL of article. You can also specify tags.
 
 ### From web browser
 
