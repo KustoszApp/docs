@@ -3,6 +3,7 @@
 :::{toctree}
 :maxdepth: 1
 
-configuration/backend
 configuration/installer
+configuration/backend
+configuration/frontend
 :::
