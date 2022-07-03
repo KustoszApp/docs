@@ -33,15 +33,9 @@ Alternatively, you can click down arrow right to "Add content" and click "Add ar
 
 ### From web browser
 
-This method requires token. See [](#how-to-obtain-the-token) below.
-
 [Bookmarklets](https://en.wikipedia.org/wiki/Bookmarklet) are special bookmarks that execute JavaScript in the context of currently opened page. They are supported by all major web browsers.
 
-Create new bookmark. Copy the string below and change `KUSTOSZ_URL` to your instance domain name, and `KUSTOSZ_TOKEN` to your token. Changed string put in "URL" field of new bookmark.
-
-```
-javascript:(function(){fetch('https://KUSTOSZ_URL/api/v1/entries/manual_add', {method: 'POST', headers: {'Content-Type': 'application/json', 'Authorization': 'Token KUSTOSZ_TOKEN'}, body: JSON.stringify({link: window.location.href.split("#")[0]})})})()
-```
+Kustosz automatically creates ready to use bookmarklet for you. Click "Settings" at the bottom of navigation panel and scroll down to "Add to Kustosz" link. Copy link target and put it in "URL" field of a new bookmark; or drag-and-drop the link to bookmarks bar (many browsers hide bookmarks bar by default).
 
 Whenever you open a page you would like to add to Kustosz, click a bookmark you have added. Instead of opening bookmarked page, browser will send HTTP request to Kustosz, and Kustosz will add visited page.
 
