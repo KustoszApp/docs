@@ -19,4 +19,4 @@ You can decide when article should be marked as read automatically, if ever. Ava
 
 ### Always keep opened entry on top of list
 
-When this options is checked, article will scroll up to the top of the screen when it is opened. This only matters for articles at the top half of the screen, as articles below them will be always scrolled up.
+When this options is checked, article will scroll up to the top of the screen when it is opened. This only matters for articles at the top half of the screen, as articles at bottom half of screen will be always scrolled up.

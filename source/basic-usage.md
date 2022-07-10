@@ -8,7 +8,7 @@ Channel is source of content displayed in Kustosz. Currently RSS, Atom and JSON 
 
 To add a new channel, click "Add content" button on top of navigation pane. In window that appears, paste URL of website you would like to subscribe to. Kustosz will automatically detect channels provided by the website. Click on channel name to get preview of few latest entries. Click "Add channel" to subscribe to channel.
 
-Alternatively, you can click down arrow right to "Add content" and click "Add channel". In window that appears, you need to provide full URL to XML file. You can also specify channel title and tags.
+Alternatively, you can click down arrow right to "Add content" and click "Add channel". In window that appears, you need to provide full URL of XML file. You can also specify channel title and tags.
 
 ## Keyboard navigation
 
@@ -35,7 +35,7 @@ Alternatively, you can click down arrow right to "Add content" and click "Add ar
 
 [Bookmarklets](https://en.wikipedia.org/wiki/Bookmarklet) are special bookmarks that execute JavaScript in the context of currently opened page. They are supported by all major web browsers.
 
-Kustosz automatically creates ready to use bookmarklet for you. Click "Settings" at the bottom of navigation panel and scroll down to "Add to Kustosz" link. Copy link target and put it in "URL" field of a new bookmark; or drag-and-drop the link to bookmarks bar (many browsers hide bookmarks bar by default).
+Kustosz automatically creates ready to use bookmarklet for you. Click "Settings" at the bottom of navigation panel and scroll down to "Add to Kustosz" link. Copy link target and paste it in "URL" field of a new bookmark; or drag-and-drop the link to bookmarks bar (be wary that many browsers hide bookmarks bar by default).
 
 Whenever you open a page you would like to add to Kustosz, click a bookmark you have added. Instead of opening bookmarked page, browser will send HTTP request to Kustosz, and Kustosz will add visited page.
 
