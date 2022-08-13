@@ -72,6 +72,18 @@ This method doesn't require any setup, but can only be exercised on a machine wh
 kustosz-manager add_entry --link 'http://URL_OF_WEB_PAGE'
 ```
 
+## Exporting channels to OPML file
+
+You can export Kustosz channels to OPML file, making it easy to migrate away from Kustosz to another feed reader.
+
+If your server and frontend share [HTTP Origin](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Origin), click "Settings" at the bottom of navigation panel and scroll down to "Export data" section. Then, click "Export channels as OPML" button.
+
+If instead of button you see message about HTTP Origin, then you can export data using command-line tool. Use following command on a machine where Kustosz is installed:
+
+```
+kustosz-manager export_channels --file /path/to/file.xml
+```
+
 ## Automatic channels update frequency
 
 When editing a channel, you can set automatic update frequency - how often Kustosz should check for new content. Default value is every one hour. If channel is lower priority for you or is known to publish seldom, you can check it less often. If you want to ensure that you learn about new content quickly enough and channel publishes a lot of content, you can check it more frequently.
