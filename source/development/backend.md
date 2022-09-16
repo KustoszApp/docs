@@ -1,6 +1,6 @@
 # Backend
 
-Backend is written in Python. It requires Python 3.9 or newer. You will need [Poetry](https://python-poetry.org/) to install package and all the dependencies.
+Backend is written in Python. It requires Python 3.9 or newer. You will need [Poetry](https://python-poetry.org/) version 1.2 or newer to install package and all the dependencies.
 
 ## Preparing development environment
 
@@ -10,7 +10,7 @@ Clone Github repo:
 
 Install dependencies:
 
-    poetry install -E container
+    poetry install --with test,dev -E container
 
 ## Changing development version configuration
 
