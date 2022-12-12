@@ -61,13 +61,13 @@ Importing OPML file can take some time, depending on number of channels and amou
 
     heroku config:set KUSTOSZ_SKIP_IMPORT_CHANNELS=1
 
-## Considerations when running Kustosz on paid plans
+## Considerations when running Kustosz on higher-tier plans
 
-[kustosz-heroku](https://github.com/KustoszApp/kustosz-heroku) repository is designed to use **single dyno** on **free plan**. Kustosz deployed from this repository won't be able to scale horizontally.
+[kustosz-heroku](https://github.com/KustoszApp/kustosz-heroku) repository is designed to use **single dyno** on **eco plan**. Kustosz deployed from this repository won't be able to scale horizontally.
 
-The first limit you are likely to encounter is Postgres row limit. Free tier provides only 10 000 rows, which can be quickly exhausted with just 100 feeds. Hobby Basic tier costs 9 USD per month and offers 10 000 000 row limit, which is virtually unlimited as far as Kustosz is concerned.
+The first limit you are likely to encounter is Postgres row limit. Mini tier provides only 10 000 rows, which can be quickly exhausted with just 100 feeds. Basic tier costs 9 USD per month and offers 10 000 000 row limit, which is virtually unlimited as far as Kustosz is concerned.
 
-You also need Redis to allow multiple dynos to coordinate their work. Free Redis tier will not allow enough connections.
+You also need Redis to allow multiple dynos to coordinate their work. Mini Redis tier will not allow enough connections.
 
     heroku addons:create heroku-redis:premium-1
 
